@@ -1,0 +1,128 @@
+.scannedDetailsMain{
+    width: 50%;
+    margin: auto;
+}
+.ScannedIcon{
+    width: 50%;
+    height: 5vw;
+    margin-bottom:10%;
+}
+.scannedImg{
+    background-image: url('./../../assets/BG\ profile\ picture.png');
+    background-position: center;
+    background-size: 100% 100%;
+    width: 200px;
+    margin: auto;
+    height: 200px;
+}
+.scannedSubDiv{
+    width: 100%;
+    text-align: left;
+    margin: auto;
+    background-color: #f1f5f8;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 20px;
+}
+
+.scannedSubDiv p{
+    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-left: 5px;
+}
+.scannedSubTitle{
+    font-size: 12px;
+    color: #99b2c6;
+    margin-bottom: 5px !important;
+}
+.scannedSubTxt{
+    font-weight: 600;
+}
+
+.ScannedCnicMain{
+    width: 100% !important;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.ScannedCnicDiv{
+    width: 40%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 12vw;
+    /* background-color: red; */
+    background-image: url('./../../assets/cnic\ box.png');
+    background-position: center;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* align-content: flex-end; */
+    justify-content: flex-end;
+}
+
+@media only screen and (max-width:1700px){
+    .ScannedIcon{
+        margin-bottom: 5%;
+}
+}
+
+@media only screen and (max-width:1300px){
+    .scannedImg{
+        height: 15vw;
+        width: 15vw;
+    }
+}
+
+@media only screen and (max-width:1200px){
+    .ScannedIcon{
+        height: 3vw;
+        margin-bottom: 0%;
+}
+}
+
+
+@media only screen and (max-width:900px){
+.scannedSubTitle{
+    font-size: 10px;
+}
+.scannedSubTxt{
+    font-size: 14px;
+}
+}
+
+@media only screen and (max-width:800px){
+
+.ScannedTxt{
+    font-size: 12px;
+}
+}
+
+@media only screen and (max-width:600px){
+    .scannedSubTitle{
+        font-size: 10px;
+    }
+    .scannedSubTxt{
+        font-size: 12px;
+    }
+    .ScannedCnicDiv{
+        width: 45%;
+        height: 13vw;
+    }
+    
+.ScannedTxt{
+    font-size: 10px;
+}
+    }
+
+    
+@media only screen and (max-width:450px){
+
+    .ScannedTxt{
+        font-size: 8px;
+    }
+    }
+    

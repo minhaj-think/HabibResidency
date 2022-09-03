@@ -1,0 +1,10 @@
+.dashboardSubDiv{
+    width: 90%;
+    margin: auto;
+}
+
+@media only screen and (max-width:599px) {
+    .dashboardSubDiv{
+        width: 99%;
+    }
+}

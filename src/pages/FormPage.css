@@ -1,0 +1,263 @@
+.formPageParent{
+    width: 90%;
+    /* background-color: red; */
+    margin: auto;
+}
+.formsMain{
+    width: 95%;
+    background-color: #fff;
+    box-shadow: 1px 1px 10px 0.5px #cccccc;
+    /* background-image: url('./../assets/BG\ form.png'); */
+    /* background-position: center; */
+    /* height: 400px; */
+    margin-top: 20px;
+    padding-bottom: 40px;
+    border-radius: 10px;
+    padding-top: 50px;
+    /* background-size: 100% 100%; */
+}
+.clientTxt{
+font-size: 20px;
+    font-family: Poppins;
+    color: #99b2c6;
+font-weight: 600;
+}
+.formBtnsMain{
+    width: 60%;
+    height: 50px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+}
+.Not_selected{
+    border-radius: 5px;
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    background-color: #f7e4e6;
+    color: #333333;
+    margin-top: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.selected{
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+    font-weight: 600;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./../assets/form\ tabs\ button.png');
+    background-position: center;
+    background-size: 100% 100%;
+}
+
+.FilesMain{
+    width: 100%;
+}
+.profileDiv{
+    background-image: url('./../assets//BG\ profile\ picture.png');
+    background-position: center;
+    background-size: 100% 100%;
+    width: 410px;
+    margin: auto;
+    height: 410px;
+}
+
+.profilePic{
+    border-radius: 50%;
+    width: 350px;
+    margin: auto;
+    height: 350px;
+    margin-top: 30px;
+}
+.ThumbDiv{
+    width: 80%;
+    margin: auto;
+    height: 350px;
+    /* background-color: red; */
+    background-image: url('./../assets/cnic\ box.png');
+    background-position: center;
+    background-size: 100% 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.ThumbTxt{
+    font-family: Poppins;
+
+}
+.CnicDiv{
+    width: 80%;
+    margin: auto;
+    height: 180px;
+    /* background-color: red; */
+    background-image: url('./../assets/cnic\ box.png');
+    background-position: center;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: flex-end;
+    /* justify-content: end; */
+}
+.CnicIcon{
+    margin: auto;
+    margin-top: 12%;
+}
+.SignDiv{
+    width: 70%;
+    margin: auto;
+    height: 180px;
+    /* background-color: red; */
+    border: 1px solid #c0b9b9;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-top: 55px;
+
+}
+
+@media only screen and (max-width:1500px){
+.profilePic{
+    height: 310px;
+    width: 310px;
+    margin-top: 50px;
+}
+}
+
+@media only screen and (max-width:1400px){
+    .profilePic{
+        height: 280px;
+        width: 280px;
+        margin-top: 40px;
+    }
+    .profileDiv{
+        height: 360px;
+        width: 360px;
+        /* margin-top: 50px; */
+    }
+    .ThumbDiv{
+        margin-top: 50px;
+    }
+
+    }
+    
+    @media only screen and (max-width:1200px){
+        .profilePic{
+            height: 220px;
+            width: 220px;
+            margin-top: 40px;
+        }
+        .profileDiv{
+            height: 300px;
+            width: 300px;
+            /* margin-top: 50px; */
+        }
+        .ThumbDiv{
+            margin-bottom: 60px;
+        }
+        }
+
+            
+    
+
+
+@media only screen and (max-width:1150px){
+    .formBtnsMain{
+        width: 70%;
+    }
+
+}
+
+@media only screen and (max-width:970px){
+    .profilePic{
+        height: 200px;
+        width: 200px;
+        margin-top: 40px;
+    }
+    .profileDiv{
+        height: 280px;
+        width: 280px;
+        /* margin-top: 50px; */
+    }
+    .ThumbDiv,.CnicDiv{
+        width: 100%;
+    }
+    .SignDiv{
+        width: 90%;
+        margin-top: 75px;
+    }
+    }
+    
+
+
+@media only screen and (max-width:899px){
+    .formBtnsMain{
+        width: 90%;
+    }
+    .formPageParent{
+        /* width: 98%; */
+    }
+    .selected span,.Not_selected span{
+        font-size: 12px;
+    }
+    .CnicDiv{
+        /* height: 200px; */
+    }
+    .profilePic{
+        height: 160px;
+        width: 160px;
+        margin-top: 20px;
+    }
+    .profileDiv{
+        height: 200px;
+        width: 200px;
+        /* margin-top: 50px; */
+    }
+}
+
+@media only screen and (max-width:650px){
+
+    .profilePic{
+        height: 140px;
+        width: 140px;
+        margin-top: 20px;
+    }
+    .profileDiv{
+        height: 180px;
+        width: 180px;
+        /* margin-top: 50px; */
+    }
+
+}
+
+
+@media only screen and (max-width:599px){
+
+.formsMain{
+    width: 100%;
+}
+.profileDiv{
+    margin-top: 60px;
+    height: 60vw;
+    width: 60vw;
+}
+.profilePic{
+    height: 44vw;
+    width: 44vw;
+    margin-top: 8vw;
+}
+.ThumbDiv,.CnicDiv{
+    width: 80%;
+}
+.SignDiv{
+    width: 70%;
+}
+}
