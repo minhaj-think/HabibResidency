@@ -1,0 +1,289 @@
+.DealerlistingMain{
+    border: 0.1px solid #f2f2f2;
+    border-radius: 5px;
+    margin-top: 100px;
+    font-family: Poppins;
+    /* margin-bottom: 40px; */
+    /* padding-top: 10px; */
+}
+.searchDiv{
+    background-image: url('./../../assets/search\ bar.png');
+    /* width: 10%; */
+    width: 30%;
+    height: 60px;
+    background-position: center;
+     background-size: 100% 100%;
+    /* background-color: red; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* height: 30px; */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.listingTItleDiv{
+    display: flex;
+    flex-direction: row;
+    padding-left: 30px;
+    padding-right: 30px;
+    justify-content: space-between;
+    align-items: center;
+}
+.SearchInput{
+    height: 50%;
+    margin-left: 7%;
+    /* display: none; */    
+    /* height: 30px; */
+    /* width: 350px; */
+    font-size: 14px;
+    background-color: transparent;
+}
+input{
+    border: none;
+}
+input:focus{
+    outline: none;
+}
+.listingItem{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /* background-color: red; */
+    background-color: #f1f5f8;
+    text-align: left;
+    /* padding-left: 5px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.listingHeadings{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /* background-color: red; */
+    background-color: #fff;
+    text-align: left;
+    /* padding-left: 5px; */
+    display: flex;
+    color: #99b2c6;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+
+}
+
+.CheckBox{
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 5px;
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PrintBtn{
+    background-image: url('./../../assets/printbarcodebutton.png');
+    background-position: center;
+    width: 80%;
+    height: 35px;
+    margin-top: -5px;
+    background-size: 100% 100%;
+}
+.PrintBtn span{
+font-size: 14px;
+display: flex;
+padding-top: 6px;
+color: #f05568;
+font-weight: 600;
+justify-content: center;
+align-items: center;
+}
+
+.checkedItem{
+    background-color: #f3d7da;
+}
+
+.DealerlistingLastDiv{
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.deleteBtn{
+    width: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    background-size: 100% 100%;
+    background-position: center;
+    background-image: url('./../../assets/form\ save\ button.png');
+}
+.deleteTxt{
+    color: #fff;
+    font-size: 14px;
+}
+.paginationDiv{
+    display: flex;
+    flex-direction: row;
+
+}
+.PrevPagBtn,.CenterPagBtn,.NextPagBtn{
+border-radius: 5px;
+height: 20px;
+width: 20px;
+cursor: pointer;
+background-color: #f1f5f8;
+font-size: 14px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.CenterPagBtn,.NextPagBtn{
+    margin-left: 5px;
+}
+.activePageBtn{
+    background-color: gray;
+}
+
+@media only screen and (max-width:1200px){
+ .listingHeadings,.listingItem{
+    font-size: 14px;
+ }   
+ .PrintBtn span{
+    padding-top: 7px;
+    font-size: 12px;
+ }
+}
+
+
+@media only screen and (max-width:1030px){
+    .PrintBtn span{
+        font-size: 10px;
+        padding-top: 9px;
+}
+    
+}
+
+@media only screen and (max-width:899px){
+    .searchDiv{
+    width: 50%;
+}
+.deleteBtn{
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 25px;
+}
+.CenterPagBtn{
+    font-size: 10px;
+}
+.deleteBtn span{
+    font-size: 10px;
+}
+.listingHeadings,.listingItem{
+    font-size: 10px;
+ }   
+ .PrintBtn span{
+    padding-top: 4px;
+    font-size: 10px;
+ }
+ .CheckBox{
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-top: 0px;
+}
+.PrintBtn{
+    height: 25px;
+    width: 98%;
+}
+.searchDiv{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.SearchInput{
+    font-size: 12px;
+}
+}
+
+@media only screen and (max-width:650px){
+
+    .PrintBtn span{
+        padding-top: 6px;
+        font-size: 8px;
+     }
+     .listingHeadings,.listingItem{
+        font-size: 10px;
+     }   
+}
+
+@media only screen and (max-width:599px){
+
+.listingTitle{
+font-size: 14px;
+}
+.searchDiv{
+ height: 50px;   
+}
+.SearchInput{
+    font-size: 10px;
+}
+.listingHeadings,.listingItem{
+    font-size: 8px;
+ }   
+.PrintBtn{
+    height: 20px;
+    margin-top: -5px;
+    width: 80%;
+}
+.CenterPagBtn{
+    font-size: 8px;
+}
+.CenterPagBtn,.PrevPagBtn,.NextPagBtn{
+    height: 15px;
+    width: 15px;
+    border-radius: 3px;
+}
+.PrintBtn span{
+    padding-top: 4px;
+}
+.deleteBtn{
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 20px;
+}
+.deleteBtn span{
+    font-size: 10px;
+}
+
+}
+
+@media only screen and (max-width:430px){
+
+    .PrintBtn span{
+        font-size: 6px;
+        padding-top: 5px;
+    }
+    .listingTitle{
+        font-size: 12px;
+     }
+.searchDiv{
+    height: 40px;
+    width: 70%;
+}
+}
+@media only screen and (max-width:400px){
+
+    .listingHeadings{
+        font-size: 7px;
+     }   
+    
+}

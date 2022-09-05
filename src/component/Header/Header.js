@@ -31,8 +31,16 @@ const Header = ({active}) => {
             <span className='headerLink3' onClick={()=>navigate('/scan')}>SCAN BARCODE</span>
             <div  className={active=='scan' ? 'show' : 'hide'} />
             </div>
+            <div className='headerTitle4 headerDiv'>
+            <span className='headerLink4' onClick={()=>navigate('/manage')}>ACCOUNTS</span>
+            <div  className={active=='manage' ? 'show' : 'hide'} />
+            </div>
+            <div className='headerTitle5 headerDiv'>
+            <span className='headerLink5' onClick={()=>navigate('/logs')}>LOGS</span>
+            <div  className={active=='logs' ? 'show' : 'hide'} />
+            </div>
         </div>
-
+        manage
     </div>
   )
 }

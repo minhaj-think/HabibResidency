@@ -3,6 +3,9 @@ import './Dashboard.css';
 import Header from '../component/Header/Header';
 import Categories from './../component/Categories/Categories.js';
 import Listing from './../component/Listing/Listing.js';
+import DealerListing from './../component/DealerListing/DealerListing.js';
+
+
 const Dashboard = () => {
 
     return (
@@ -11,6 +14,7 @@ const Dashboard = () => {
         <div className='dashboardSubDiv'>
         <Categories/>
         <Listing />
+        <DealerListing />
         </div>
     </div>
   )

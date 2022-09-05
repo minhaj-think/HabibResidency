@@ -101,7 +101,25 @@
     color: #99b2c6;
 }
 
+.NameForm{
+    width: 84%;
+}
+.SelectForm{
+    border-radius: 3px;
+    padding-left: 2%;
+    width: 16%;
+    outline: none;
+    border: none;
+    color: #333333;
+    border-right: 2px solid #99b2c6;
+    background-color: #F1F5F8 !important;
+}
+.downComp{
+    height: 20px;
+    padding-top: 5px;
 
+    width: 30%;
+}
 @media only screen and (max-width:899px){
     .SaveBtn{
     width: 35%;
