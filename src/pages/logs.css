@@ -27,3 +27,54 @@
     box-shadow: 0px 2px 10px 1px #e0e0e0;
     background-color: #fff;
 }
+
+@media only screen and (max-width:1000px){
+    .logsFirstSub{
+        width: 18%;
+    }
+}
+
+
+@media only screen and (max-width:750px){
+    .logsFirstSub span,.logsSecondSub span{
+        font-size: 12px;
+    }
+.logsSecondSub,.logsFirstSub{
+    height: 80px;
+}
+}
+
+@media only screen and (max-width:600px){
+
+.logsMain{
+    width: 85%;
+}
+}
+
+
+@media only screen and (max-width:520px){
+
+    .logsMain{
+        width: 90%;
+    }
+    .logsSecondSub,.logsFirstSub{
+        height: 70px;
+    }
+    
+}
+
+@media only screen and (max-width:450px){
+    .logsFirstSub span,.logsSecondSub span{
+        font-size: 10px;
+    }
+    .logsSecondSub,.logsFirstSub{
+        height: 60px;
+    }
+    .logsFirstSub{
+        width: 24%;
+    }
+    .logsSecondSub{
+        width: 72%;
+    }
+    
+}

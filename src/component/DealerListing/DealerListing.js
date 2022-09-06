@@ -3,36 +3,46 @@ import './DealerListing.css';
 import {Grid} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
+import axios from 'axios';
 
 const DealerListing = () => {
 
     var [windowWidth,setWindowWidth] = useState(window.outerWidth)
+    var [dealers,setDealers] = useState([])
+    var [pageLength,setPageLength] = useState(2)
+    var [headingChecked,setHeadingChecked] = useState(false)
+    var [activeIndex,setActiveIndex] = useState(1)
+    var [pageArray,setPageArray] = useState([])
+    var [a,seta] = useState(false)
+
+    useEffect(()=>{
+        fetchingData()
+    },[activeIndex])
+
+    useEffect(()=>{
+        pageArray=[];
+        for(let i=0;i<pageLength;i++){
+            pageArray=[...pageArray,i+1]
+            setPageArray(pageArray)
+        }
+        handlePagination(1)
+    },[])
+
+    var fetchingData = async()=>{
+        var {data} = await axios.post('http://localhost:5353/dealer/getDealers/'+activeIndex);
+        if(data.message=='Success'){
+            setDealers(data.doc.dealers)
+            pageLength=Math.ceil(Number(data.doc.total)/5)
+            setPageLength(pageLength)
+        }
+
+    }
 
     window.addEventListener('resize',()=>{
         setWindowWidth(window.outerWidth)
     })
     
-    var [headingChecked,setHeadingChecked] = useState(false)
-    var [activeIndex,setActiveIndex] = useState(1)
-    var [pageArray,setPageArray] = useState([])
-    var [arr,setArr] = useState([
-        {checked:false,name:'abcd',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Karachi'},
-        {checked:true,name:'qrst',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Lahore'},
-        {checked:false,name:'ijkl mnop',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Chicago'},
-        {checked:false,name:'efgh',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Sydney'},
-    ])
-    var [a,seta] = useState(false)
 
-    var pageLength = 10
-    useEffect(()=>{
-        pageArray=[];
-        for(let i=0;i<pageLength;i++){
-            pageArray=[...pageArray,i+1]
-            console.log(pageArray)
-            setPageArray(pageArray)
-        }
-        handlePagination(1)
-    },[])
 
     var handlePagination = currentPage =>{
 
@@ -45,7 +55,11 @@ const DealerListing = () => {
 
         // less than five
         if(pageLength<6){
-            setPageArray([1,2,3,4,5])
+            pageArray=[];
+            for(let i=0;i<pageLength;i++){
+                pageArray=[...pageArray,i+1]
+            }
+            setPageArray(pageArray)
         }
         else{
             // for 1 and 2
@@ -76,7 +90,7 @@ const DealerListing = () => {
 
     return (
         <>
-    <div className='DealerlistingMain'>
+    <div className='DealerlistingMain listingMain'>
         <div className='listingTItleDiv'>
             <span className='listingTitle'>Dealer Details</span>
             <div className='searchDiv'>
@@ -97,7 +111,7 @@ const DealerListing = () => {
                         </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>Name as per CNIC</span>
+                    <span>{windowWidth>500 ? 'Name as per CNIC' : 'Name in CNIC' }</span>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
                     <span>CNIC</span>
@@ -109,7 +123,7 @@ const DealerListing = () => {
                        <span>Security ID</span>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>City</span>
+                       <span>No of Codes</span>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
                     </Grid>
@@ -117,39 +131,51 @@ const DealerListing = () => {
 
 
             { 
-                arr.map((v,i)=>{
+                dealers.map((v,i)=>{
                     return(
-                    <div className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
+                    <div key={i} className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
+                    <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
-                            arr[i].checked = !v.checked;
-                            setArr(arr) 
                             seta(!a)
                         }}
                         >
                             <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
+                            </div>
                         </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>{v.name}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.firmName}</span>
+                    </div>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
-                    <span>{v.cnic}</span>
+                    <div className='subColDiv' >
+                    <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
+                    </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
-                       <span>{v.mobile}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.phone}</span>
+                    </div>
                     </Grid>
                     <Grid item md={2} sm={2} xs={1.5}>
-                       <span>{v.id}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.securityId}</span>
+                    </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>{v.city}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.barcodes.length}</span>
+                    </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
+                    <div className='subColDiv' >
                     <div className='PrintBtn'>
                         <span>Show Barcode</span>
+                    </div>
                     </div>
                     </Grid>
                 </Grid>
@@ -159,7 +185,7 @@ const DealerListing = () => {
             }
 
     </div>
-    <div className='DealerlistingLastDiv'>
+    <div className='DealerlistingLastDiv listingLastDiv'>
             <div className='paginationDiv'>
                 <div className='PrevPagBtn'>
                     <MdKeyboardArrowLeft/>

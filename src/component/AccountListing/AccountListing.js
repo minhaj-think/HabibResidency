@@ -28,7 +28,6 @@ const AccountListing = () => {
         pageArray=[];
         for(let i=0;i<pageLength;i++){
             pageArray=[...pageArray,i+1]
-            console.log(pageArray)
             setPageArray(pageArray)
         }
         handlePagination(1)
@@ -76,7 +75,7 @@ const AccountListing = () => {
 
     return (
         <>
-    <div className='AccountlistingMain'>
+    <div className='AccountlistingMain listingMain'>
 
         <Grid container className={'listingHeadings'}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
@@ -117,6 +116,7 @@ const AccountListing = () => {
                     <div className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
+                    <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
                             arr[i].checked = !v.checked;
@@ -126,25 +126,38 @@ const AccountListing = () => {
                         >
                             <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
                         </div>
+                            </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>{v.name}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.name}</span>
+                    </div>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
-                    <span>{v.cnic}</span>
+                    <div className='subColDiv' >
+                    <span style={{wordBreak:'break-all'}} >{v.cnic}</span>
+                    </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
-                       <span>{v.mobile}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.mobile}</span>
+                    </div>
                     </Grid>
                     <Grid item md={2} sm={2} xs={1.5}>
-                       <span>{v.id}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.id}</span>
+                    </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>{v.city}</span>
+                    <div className='subColDiv' >
+                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
+                    </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
+                    <div className='subColDiv' >
                     <div className='EditBtn'>
                         <span>Edit</span>
+                    </div>
                     </div>
                     </Grid>
                 </Grid>
@@ -154,7 +167,7 @@ const AccountListing = () => {
             }
 
     </div>
-    <div className='listingLastDiv'>
+    <div className='listingLastDiv listingLastDiv'>
             <div className='paginationDiv'>
                 <div className='PrevPagBtn'>
                     <MdKeyboardArrowLeft/>

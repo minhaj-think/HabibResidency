@@ -5,6 +5,15 @@
     /* padding-bottom: 10px; */
     /* padding-top: 10px; */
 }
+.subColDiv{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.subColDiv div{
+    margin: auto;
+}
 .searchDiv{
     background-image: url('./../../assets/search\ bar.png');
     /* width: 10%; */
@@ -264,7 +273,8 @@ font-size: 14px;
 
 }
 
-@media only screen and (max-width:430px){
+
+@media only screen and (max-width:440px){
 
     .PrintBtn span{
         font-size: 6px;

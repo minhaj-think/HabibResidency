@@ -3,37 +3,46 @@ import './Listing.css';
 import {Grid} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
+import axios from 'axios';
+import ListingModal from './../ListingModal/ListingModal.js'; 
 
 const Listing = () => {
 
     var [windowWidth,setWindowWidth] = useState(window.outerWidth)
-
-    window.addEventListener('resize',()=>{
-        setWindowWidth(window.outerWidth)
-    })
-    
+    var [clients,setClients] = useState([])
+    var [pageLength,setPageLength] = useState(2)
     var [headingChecked,setHeadingChecked] = useState(false)
     var [activeIndex,setActiveIndex] = useState(1)
     var [pageArray,setPageArray] = useState([])
-    var [arr,setArr] = useState([
-        {checked:false,name:'abcd',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Karachi'},
-        {checked:true,name:'qrst',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Lahore'},
-        {checked:false,name:'ijkl mnop',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Chicago'},
-        {checked:false,name:'efgh',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Sydney'},
-    ])
     var [a,seta] = useState(false)
 
-    var pageLength = 10
+    useEffect(()=>{
+        fetchingData()
+    },[activeIndex])
+
     useEffect(()=>{
         pageArray=[];
         for(let i=0;i<pageLength;i++){
             pageArray=[...pageArray,i+1]
-            console.log(pageArray)
             setPageArray(pageArray)
         }
         handlePagination(1)
     },[])
 
+
+    var fetchingData = async()=>{
+        var {data} = await axios.post('http://localhost:5353/client/getClients/'+activeIndex);
+        if(data.message=='Success'){
+            setClients(data.doc.clients)
+            pageLength=Math.ceil(Number(data.doc.total)/5)
+            setPageLength(pageLength)
+        }
+    }
+
+    window.addEventListener('resize',()=>{
+        setWindowWidth(window.outerWidth)
+    })
+ 
     var handlePagination = currentPage =>{
 
         if(currentPage=='prev'){
@@ -45,7 +54,11 @@ const Listing = () => {
 
         // less than five
         if(pageLength<6){
-            setPageArray([1,2,3,4,5])
+            pageArray=[];
+            for(let i=0;i<pageLength;i++){
+                pageArray=[...pageArray,i+1]
+            }
+            setPageArray(pageArray)
         }
         else{
             // for 1 and 2
@@ -76,6 +89,7 @@ const Listing = () => {
 
     return (
         <>
+        <ListingModal/>
     <div className='listingMain'>
         <div className='listingTItleDiv'>
             <span className='listingTitle'>Client Details</span>
@@ -96,8 +110,8 @@ const Listing = () => {
                             <AiOutlineCheck color={headingChecked ? 'red' : '#fff'} style={{height:'80%'}} />
                         </div>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>Name as per CNIC</span>
+                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                       <span>{windowWidth>500 ? 'Name as per CNIC' : 'Name in CNIC' }</span>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
                     <span>CNIC</span>
@@ -105,7 +119,7 @@ const Listing = () => {
                     <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
                        <span>Mobile Number</span>
                     </Grid>
-                    <Grid item md={2} sm={2} xs={1.5}>
+                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
                        <span>Security ID</span>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={1.5}>
@@ -117,39 +131,51 @@ const Listing = () => {
 
 
             { 
-                arr.map((v,i)=>{
+                clients.map((v,i)=>{
                     return(
-                    <div className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
+                    <div key={i} className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
+                    <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
-                            arr[i].checked = !v.checked;
-                            setArr(arr) 
                             seta(!a)
                         }}
                         >
                             <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
                         </div>
+                        </div>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>{v.name}</span>
+                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.fName}</span>
+                       </div>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
-                    <span>{v.cnic}</span>
+                       <div className='subColDiv'>
+                    <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
+                       </div>
                     </Grid>
                     <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
-                       <span>{v.mobile}</span>
+                       <div className='subColDiv'>
+                       <span>{v.phone}</span>
+                       </div>
                     </Grid>
-                    <Grid item md={2} sm={2} xs={1.5}>
-                       <span>{v.id}</span>
+                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.securityId}</span>
+                       </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>{v.city}</span>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
+                       </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
+                       <div className='subColDiv'>
                     <div className='PrintBtn'>
                         <span>Print Barcode</span>
+                       </div>
                     </div>
                     </Grid>
                 </Grid>
@@ -166,7 +192,7 @@ const Listing = () => {
                 </div>
                 {
                     pageArray.map((v,i)=>(
-                <div className={activeIndex==v ? 'CenterPagBtn activePageBtn' : 'CenterPagBtn'} onClick={()=>handlePagination(v)}>
+                <div key={i} className={activeIndex==v ? 'CenterPagBtn activePageBtn' : 'CenterPagBtn'} onClick={()=>handlePagination(v)}>
                     <span>{(v=='next' || v=='prev') ? '...' : v }</span>
                 </div>
                     ))

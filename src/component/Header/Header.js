@@ -40,7 +40,6 @@ const Header = ({active}) => {
             <div  className={active=='logs' ? 'show' : 'hide'} />
             </div>
         </div>
-        manage
     </div>
   )
 }
