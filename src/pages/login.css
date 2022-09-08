@@ -1,0 +1,123 @@
+.loginMain{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.loginSubMainSecond{
+    height: 100%;
+    width: 45%;
+    display: flex;
+    /* background-color: green; */
+    justify-content: center;
+
+}
+
+.loginSubMainFirst{
+    width: 55%;
+    background-image: url('./../assets/loginImage.jpg');
+    background-position: center;
+    background-size: 100% 100%;
+}
+.loginFormDiv{
+    width:70%;
+    box-shadow: 1px 1px 10px 0.5px #cccccc;
+    /* background-color: red; */
+    margin: auto;
+    text-align: left;
+    /* padding-left: 5%; */
+    /* margin-left: -5%; */
+    padding-top: 30px;
+    padding-bottom: 50px;
+    border-radius: 5px;
+}
+
+.loginHereTxt{
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.loginTxt{
+    margin-bottom: 2px;
+    font-size: 20px;
+}
+
+.loginFromSubDiv{
+    width: 94%;
+    text-align: left;
+    /* background-color: red; */
+    margin: auto;
+}
+.loginInput{
+    width: 97%;
+}
+.loginBtn{
+    background-color: #fff;
+    border: 1px solid #f05568;
+    color: #f05568;
+    border-radius: 5px;
+    width: 36%;
+    margin-left: 32%;
+    margin-top: 20px;
+    font-size: 15px;
+    height: 36px;
+    cursor: pointer;
+}
+.loginBtn:hover{
+    background-color: #f05568;
+    border: 1px solid #f05568;
+    color: #fff;
+}
+.loginHr{
+    width: 10%;
+    border: 2px solid #f05568;
+    margin: auto;
+    border-radius: 50px;
+}
+
+@media only screen and (max-width:1000px){
+.loginFormDiv{
+    width: 80%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.loginSubMainSecond{
+    width: 55%;
+}
+.loginSubMainFirst{
+    widows: 45%;
+}
+}
+
+@media only screen and (max-width:650px){
+
+    .loginFormDiv{
+        width: 95%;
+    }
+    .loginInput{
+        width: 95%;
+    }
+.loginHereTxt{
+    font-size: 20px;
+}
+.loginTxt{
+    font-size: 16px;
+}
+.loginHr{
+}
+}
+
+@media only screen and (max-width:550px){
+.loginSubMainFirst{
+    display: none;
+    width: 0%;
+}
+.loginSubMainSecond{
+    width: 100%;
+}
+.loginFormDiv{
+    width: 85%;
+}
+
+}

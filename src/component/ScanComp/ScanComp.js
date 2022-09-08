@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import BarcodeScannerComponent from "react-webcam-barcode-scanner";
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
 import axios from 'axios';
 
 import Webcam from "react-webcam";
@@ -36,6 +36,15 @@ fetching();
         <div className='ScanImgDiv'
         onClick={()=>setShow(true)}
         >
+<BarcodeScannerComponent
+        width={500}
+        height={500}
+        onUpdate={(err, result) => {
+          if (result) setData(result.text);
+          else setData("Not Found");
+        }}
+      />
+  <div style={{height:'200px'}}></div>
           <BarcodeScannerComponent
         width={600}
         height={600}
