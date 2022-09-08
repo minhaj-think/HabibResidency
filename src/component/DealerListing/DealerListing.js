@@ -4,16 +4,20 @@ import {Grid} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
 import axios from 'axios';
+import DealerListingModal from './../DealerListingModal/DealerListingModal.js'; 
 
 const DealerListing = () => {
 
     var [windowWidth,setWindowWidth] = useState(window.outerWidth)
     var [dealers,setDealers] = useState([])
-    var [pageLength,setPageLength] = useState(2)
+    var [pageLength,setPageLength] = useState(null)
     var [headingChecked,setHeadingChecked] = useState(false)
+    var [headingChecked1,setHeadingChecked1] = useState(false)
     var [activeIndex,setActiveIndex] = useState(1)
     var [pageArray,setPageArray] = useState([])
-    var [a,seta] = useState(false)
+    const [openModal, setOpenModal] = useState(false);
+    const [barCodes, setBarCodes] = useState([]);
+    var [checked,setChecked] = useState(new Array(20).fill(false))
 
     useEffect(()=>{
         fetchingData()
@@ -25,14 +29,19 @@ const DealerListing = () => {
             pageArray=[...pageArray,i+1]
             setPageArray(pageArray)
         }
-        handlePagination(1)
+        setTimeout(()=>{
+            console.log('yes')
+handlePagination(1)
+
+        },2000)
     },[])
 
     var fetchingData = async()=>{
-        var {data} = await axios.post('http://localhost:5353/dealer/getDealers/'+activeIndex);
+        var {data} = await axios.post('https://40e2-75-119-139-19.ngrok.io/dealer/getDealers/'+activeIndex);
         if(data.message=='Success'){
             setDealers(data.doc.dealers)
-            pageLength=Math.ceil(Number(data.doc.total)/5)
+            // console.log('dealerss==>',data.doc.dealers)
+            pageLength=Math.ceil(Number(data.doc.total)/20)
             setPageLength(pageLength)
         }
 
@@ -90,6 +99,7 @@ const DealerListing = () => {
 
     return (
         <>
+        <DealerListingModal barCodes={barCodes} setOpenModal={setOpenModal}  openModal={openModal} />
     <div className='DealerlistingMain listingMain'>
         <div className='listingTItleDiv'>
             <span className='listingTitle'>Dealer Details</span>
@@ -133,16 +143,21 @@ const DealerListing = () => {
             { 
                 dealers.map((v,i)=>{
                     return(
-                    <div key={i} className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
+                    <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
-                            seta(!a)
+                            checked[i] = !checked[i];
+                            setChecked(checked)
+                            setHeadingChecked1(!headingChecked1)
                         }}
                         >
-                            <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
+                            {
+                                checked[i] &&
+                            <AiOutlineCheck color={'red'} style={{height:'80%'}} />
+                            }
                             </div>
                         </div>
                     </Grid>
@@ -173,7 +188,12 @@ const DealerListing = () => {
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
                     <div className='subColDiv' >
-                    <div className='PrintBtn'>
+                    <div className='PrintBtn'
+                    onClick={()=>{
+                        setBarCodes(v.barcodes)
+                        setOpenModal(true)
+                    }}
+                    >
                         <span>Show Barcode</span>
                     </div>
                     </div>
@@ -188,7 +208,13 @@ const DealerListing = () => {
     <div className='DealerlistingLastDiv listingLastDiv'>
             <div className='paginationDiv'>
                 <div className='PrevPagBtn'>
-                    <MdKeyboardArrowLeft/>
+                    <MdKeyboardArrowLeft
+                onClick={()=>{
+                    if(activeIndex>1){
+                        handlePagination(activeIndex-1)
+                    }
+                }}
+                    />
                 </div>
                 {
                     pageArray.map((v,i)=>(
@@ -199,7 +225,13 @@ const DealerListing = () => {
                 }
 
                 <div className='NextPagBtn'>
-                    <MdKeyboardArrowRight/>
+                    <MdKeyboardArrowRight
+                onClick={()=>{
+                    if(activeIndex<pageLength){
+                        handlePagination(activeIndex+1)
+                    }
+                }}
+                    />
                 </div>
             </div>
             <div className='deleteBtn'>

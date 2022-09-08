@@ -85,7 +85,7 @@ const Form2 = ({front,back,profile,sign}) => {
         // }
 
         // console.log(obj)
-        var data = await axios.post('http://localhost:5353/dealer/addDealer',obj)
+        var data = await axios.post('https://40e2-75-119-139-19.ngrok.io/dealer/addDealer',obj)
         // console.log(data)
         if(data.data.message=='Success'){
             alert('Successfull')

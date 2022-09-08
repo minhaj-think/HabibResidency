@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Barcode from 'react-barcode';
 import ReactToPrint from 'react-to-print';
-import './ListingModal.css';
+import './DealerListingModal.css';
 
 const style = {
     position: 'absolute',
@@ -16,31 +16,40 @@ const style = {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    maxHeight:'60%',
+    overflow:'scroll'
   };
   
 
-const ListingModal = ({setOpen,open,barCode}) => {
+const DealerListingModal = ({setOpenModal,openModal,barCodes}) => {
   const componentRef = useRef();
+
+// var barCodes=['a','b']
 
   return (
 <Modal
-        open={open}
-        onClose={()=>setOpen(false)}
+        open={openModal}
+        onClose={()=>setOpenModal(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div  ref={componentRef} className='singleBarCodeMain'>
-        <Barcode value={barCode} style={{maxWidth:'200px'}} />
+          <div ref={componentRef}>            
+            {
+                barCodes.map((v,i)=>(
+                    <div className='multiBarCodeMain'>
+                    <Barcode value={v} style={{maxWidth:'200px'}} />
+                      </div>            
+                ))
+            }
           </div>
           <ReactToPrint
         trigger={() => <button className='printThisBtn'>Print this out!</button>}
         content={() => componentRef.current}
       />
-
         </Box>
       </Modal>
     )
 }
 
-export default ListingModal
+export default DealerListingModal

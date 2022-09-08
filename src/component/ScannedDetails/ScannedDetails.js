@@ -2,26 +2,27 @@ import React from 'react'
 import './ScannedDetails.css';
 import CnicIcon from './../../assets/cnicicon.svg';
 
-const ScannedDetails = () => {
+const ScannedDetails = ({fetchedData}) => {
+
 
     return (
     <div className='scannedDetailsMain'>
     <div className='scannedImg'></div>        
     <div className='scannedSubDiv'>
         <p className='scannedSubTitle'>Name</p>
-        <p className='scannedSubTxt'>Habib Residency</p>
+        <p className='scannedSubTxt'>{fetchedData.NTNnumber ? fetchedData.firmName : fetchedData.fName}</p>
     </div>
     <div className='scannedSubDiv'>
     <p className='scannedSubTitle'>CNIC</p>
-    <p className='scannedSubTxt'>0220192019201</p>        
+    <p className='scannedSubTxt'>{fetchedData.CNIC}</p>        
     </div>
     <div className='scannedSubDiv'>
     <p className='scannedSubTitle'>Mobile Number</p>
-    <p className='scannedSubTxt'>+92 090078601</p>        
+    <p className='scannedSubTxt'>{fetchedData.phone}</p>        
     </div>
     <div className='scannedSubDiv'>
     <p className='scannedSubTitle'>Security ID</p>
-    <p className='scannedSubTxt'>12849120153</p>        
+    <p className='scannedSubTxt'>{fetchedData.securityId}</p>        
     </div>
     <div className='ScannedCnicMain'>
     <div className='ScannedCnicDiv'>

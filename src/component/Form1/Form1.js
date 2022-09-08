@@ -52,7 +52,7 @@ const Form1 = ({front,back,profile,sign}) => {
             signatureImage:sign,
             clientImage:profile
         }
-        var {data} = await axios.post('http://localhost:5353/client/addClient',obj)
+        var {data} = await axios.post('https://40e2-75-119-139-19.ngrok.io/client/addClient',obj)
         if(data.message=='Success'){
             alert('Successfull')
         }else{

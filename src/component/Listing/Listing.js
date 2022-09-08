@@ -12,10 +12,13 @@ const Listing = () => {
     var [clients,setClients] = useState([])
     var [pageLength,setPageLength] = useState(2)
     var [headingChecked,setHeadingChecked] = useState(false)
+    var [headingChecked1,setHeadingChecked1] = useState(false)
     var [activeIndex,setActiveIndex] = useState(1)
     var [pageArray,setPageArray] = useState([])
-    var [a,seta] = useState(false)
-
+    const [open, setOpen] = useState(false);
+    const [barCode, setBarCode] = useState('');
+    var [checked,setChecked] = useState(new Array(20).fill(false))
+    
     useEffect(()=>{
         fetchingData()
     },[activeIndex])
@@ -27,14 +30,23 @@ const Listing = () => {
             setPageArray(pageArray)
         }
         handlePagination(1)
+        setTimeout(()=>{
+            console.log('yes')
+handlePagination(1)
+
+        },2000)
+
     },[])
 
 
     var fetchingData = async()=>{
-        var {data} = await axios.post('http://localhost:5353/client/getClients/'+activeIndex);
+        setClients([])
+        var {data} = await axios.post('https://40e2-75-119-139-19.ngrok.io/client/getClients/'+activeIndex);
         if(data.message=='Success'){
             setClients(data.doc.clients)
-            pageLength=Math.ceil(Number(data.doc.total)/5)
+            // console.log(data.doc.clients)
+            pageLength=Math.ceil(Number(data.doc.total)/20)
+            // console.log(pageLength)
             setPageLength(pageLength)
         }
     }
@@ -89,7 +101,7 @@ const Listing = () => {
 
     return (
         <>
-        <ListingModal/>
+        <ListingModal setOpen={setOpen} barCode={barCode} open={open} />
     <div className='listingMain'>
         <div className='listingTItleDiv'>
             <span className='listingTitle'>Client Details</span>
@@ -133,16 +145,21 @@ const Listing = () => {
             { 
                 clients.map((v,i)=>{
                     return(
-                    <div key={i} className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
+                    <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
                     <Grid item md={1} sm={0.5} xs={0.5}>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
-                            seta(!a)
+                            checked[i] = !checked[i];
+                            setChecked(checked)
+                            setHeadingChecked1(!headingChecked1)
                         }}
                         >
-                            <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
+                            {
+                                checked[i] &&
+                            <AiOutlineCheck color={'red'} style={{height:'80%'}} />
+                            }
                         </div>
                         </div>
                     </Grid>
@@ -173,7 +190,11 @@ const Listing = () => {
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
                        <div className='subColDiv'>
-                    <div className='PrintBtn'>
+                    <div className='PrintBtn' onClick={()=>{
+                        setBarCode(v.barcode)
+                        setOpen(true)
+                        
+                        }}>
                         <span>Print Barcode</span>
                        </div>
                     </div>
@@ -187,7 +208,11 @@ const Listing = () => {
     </div>
     <div className='listingLastDiv'>
             <div className='paginationDiv'>
-                <div className='PrevPagBtn'>
+                <div className='PrevPagBtn'
+                onClick={()=>{
+                    if(activeIndex>1)
+                    handlePagination(activeIndex-1)
+                    }}>
                     <MdKeyboardArrowLeft/>
                 </div>
                 {
@@ -198,7 +223,13 @@ const Listing = () => {
                     ))
                 }
 
-                <div className='NextPagBtn'>
+                <div className='NextPagBtn'
+                onClick={()=>{
+                    if(activeIndex<pageLength){
+                        handlePagination(activeIndex+1)
+                    }
+                }}
+                >
                     <MdKeyboardArrowRight/>
                 </div>
             </div>

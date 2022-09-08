@@ -1,0 +1,27 @@
+.multiBarCodeMain{
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+}
+.printThisBtn{
+    margin: auto;
+    background-color: #fff;
+    border: 1px solid #F05957;
+    color: #F05957;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 30px;
+    padding:10px 0px 10px 0px;
+}
+
+.printThisBtn:hover{
+    background-color: #F05957;
+    border: 1px solid #F05957;
+    color: #fff;
+
+}

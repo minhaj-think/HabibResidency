@@ -21,7 +21,7 @@ var handleProfile = async (e)=>{
     var formData1= new FormData();
     formData1.append('fileData',e.target.files[0]);
     console.log("ues 21 312")
-    fetch('http://localhost:5353/api/uploadFile',{
+    fetch('https://40e2-75-119-139-19.ngrok.io/api/uploadFile',{
     method: 'POST',
     body: formData1,
     redirect: 'follow'
@@ -38,7 +38,7 @@ var handleFront = async (e)=>{
     
     var formData2 = new FormData();
     formData2.append('fileData',e.target.files[0]);
-    fetch('http://localhost:5353/api/uploadFile',{
+    fetch('https://40e2-75-119-139-19.ngrok.io/api/uploadFile',{
         method: 'POST',
         body: formData2,
         redirect: 'follow'
@@ -55,7 +55,7 @@ var handleBack = async (e)=>{
     
     var formData3 = new FormData();
     formData3.append('fileData',e.target.files[0]);
-    fetch('http://localhost:5353/api/uploadFile',{
+    fetch('https://40e2-75-119-139-19.ngrok.io/api/uploadFile',{
         method: 'POST',
         body: formData3,
         redirect: 'follow'
@@ -72,7 +72,7 @@ var handleSign = async (e)=>{
     
     var formData4 = new FormData();
     formData4.append('fileData',e.target.files[0]);
-    fetch('http://localhost:5353/api/uploadFile',{
+    fetch('https://40e2-75-119-139-19.ngrok.io/api/uploadFile',{
         method: 'POST',
         body: formData4,
         redirect: 'follow'
