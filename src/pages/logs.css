@@ -1,10 +1,18 @@
 .logsMain{
     width: 80%;
     margin: auto;
-    margin-top: 40px;
+    margin-top: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.logPagination{
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .logsFirstSub{
     width: 15%;

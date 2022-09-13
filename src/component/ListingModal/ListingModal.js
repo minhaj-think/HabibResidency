@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import Barcode from 'react-barcode';
 import ReactToPrint from 'react-to-print';
 import './ListingModal.css';
+import axios from 'axios';
+import { dev } from '../../config/routes';
 
 const style = {
     position: 'absolute',
@@ -21,6 +23,33 @@ const style = {
 
 const ListingModal = ({setOpen,open,barCode}) => {
   const componentRef = useRef();
+  var [verify,setVerify] = useState(false)
+
+  const handleEvent=async()=>{
+    var getId =  localStorage.getItem('HabibId')
+    var type = localStorage.getItem('type')
+
+    if(type=='SuperAdmin'){
+      var obj={
+        logType:'print-barcode',
+        operationBy:'superadmin',
+      }
+    }else{
+      var obj={
+        logType:'print-barcode',
+        operationBy:'user',
+        user:getId
+      }
+    }
+
+    var {data} = await axios.post(dev+'/client/printBarcode',obj);
+    if(data.message=='Success'){
+      console.log('successful')
+      setVerify(true)
+    }else{
+      console.log('falied-->',data)
+    }
+  }
 
   return (
 <Modal
@@ -33,10 +62,18 @@ const ListingModal = ({setOpen,open,barCode}) => {
           <div  ref={componentRef} className='singleBarCodeMain'>
         <Barcode value={barCode} style={{maxWidth:'200px'}} />
           </div>
+          <button className='printThisBtn'
+          onClick={()=>handleEvent()}
+        >Verify to print</button>
+        {
+          verify &&
           <ReactToPrint
-        trigger={() => <button className='printThisBtn'>Print this out!</button>}
+        trigger={() => <button className='printThisBtn'
+        >Print this out!</button>}
+        onAfterPrint={()=>setVerify(false)}
         content={() => componentRef.current}
       />
+        }
 
         </Box>
       </Modal>

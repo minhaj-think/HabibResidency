@@ -1,11 +1,17 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import './../Form1/Form1.css';
-import { Grid } from '@mui/material';
+import { Grid ,Alert,AlertTitle} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
 import axios from 'axios';
+import { dev } from '../../config/routes';
+import { useNavigate } from 'react-router-dom';
 
-const Form2 = ({front,back,profile,sign}) => {
+const Form2 = ({front,back,profile,sign,edit,state}) => {
 
+
+    var [alertTxt,setAlertTxt] = useState('');
+    var [alertShow,setAlertShow] = useState(false);
+    var navigate = useNavigate()
     var [checked,setChecked] = useState(true)
     var [name,setName] =  useState('');
     var [ceo,setCeo] =  useState('');
@@ -25,7 +31,89 @@ const Form2 = ({front,back,profile,sign}) => {
     var [dealerRegId,setDealerRegId] =  useState('');
     var [remarks,setRemarks] =  useState('');
 
+    useEffect(()=>{
+
+        if(edit && state){
+            setName(state.user.firmName)
+            setCeo(state.user.nameOfCEO)
+            setCnic(state.user.CNIC)
+            setNumber(state.user.phone)
+            setBusiNum(state.user.businessNumber)
+            setBusiAdd(state.user.businessAddress)
+            setSecp(state.user.SECPNumber)
+            setSecurityId(state.user.securityId)
+            setEmail(state.user.email)
+            setFormNo(state.user.barcodes.length)
+            setNtn(state.user.NTNnumber)
+            setRemarks(state.user.additionalRemarks)
+            setDealer(state.user.referenceName)
+            setDealerNum(state.user.referenceMobile)
+            setChecked(state.user.dealerReferred)
+            // setDealerRegId(state.user.)
+
+        }
+
+    },[])
+
+
     var submit = async ()=>{
+        var getId =  localStorage.getItem('HabibId')
+        var type = localStorage.getItem('type')
+
+        setAlertShow(false)
+        if(profile==''){
+            setAlertShow(true)
+            setAlertTxt('Please select your profile picture first.')
+            return
+        }if(front==''){
+            setAlertShow(true)
+            setAlertTxt('Please select front image of your CNIC .')
+            return
+        }if(back==''){
+            setAlertShow(true)
+            setAlertTxt('Please select back side image of your CNIC .')
+            return
+        }if(sign==''){
+            setAlertShow(true)
+            setAlertTxt('Please select your signature image.')
+            return
+        }if(formNo<1){
+            setAlertShow(true)
+            setAlertTxt('Please enter atleast 1 form.')
+            return
+        }
+        if(!edit){
+            if(
+                name=='' ||
+                ceo=='' ||
+                cnic=='' ||
+                number=='' ||
+                busiNum=='' ||
+                securityId=='' ||
+                ntn=='' ||
+                secp=='' ||
+                busiAdd=='' ||
+                email==''
+            ){
+                setAlertShow(true)
+                setAlertTxt('Please fill form completely.')
+                return
+            }
+    
+        }
+        if(type=='SuperAdmin'){
+            //   logType:val,
+            var event={
+              operationBy:'superadmin',
+            }
+          }else{
+              //   logType:val,
+            var event={
+              operationBy:'user',
+              user:getId
+            }
+          }
+  
 
         var obj={
             firmName:name,
@@ -38,13 +126,15 @@ const Form2 = ({front,back,profile,sign}) => {
             SECPNumber:secp,
             businessAddress:busiAdd,
             email,
-            noOfBarcodes:20,
+            noOfBarcodes:formNo,
             dealerImage:profile,
             cnicFrontImage:front,
             cnicBackImage:back,
             signatureImage:sign,
+            ...event,
+            logType:edit ? 'edit-form' : 'submit-form'
         }
-
+        console.log(obj)
         if(checked){
             obj={
             ...obj,                            
@@ -61,39 +151,56 @@ const Form2 = ({front,back,profile,sign}) => {
     }   
         }
 
-        // var obj={
-        //     firmName:"Test Dealer",
-        //     email:"test11@dealer2113.com",
-        //     nameOfCEO:"S/O - New User",
-        //     NTNnumber:"11845671228",
-        //     SECPNumber:"118430241113",
-        //     securityId:"11HFH575562300",
-        //     CNIC:"1134567892252",
-        //     phone:"111012345671",
-        //     businessNumber:"111534444444",
-        //     businessAddress:"Street 123",
-        //     dealerImage:"Path to image",
-        //     cnicFrontImage:"Path to image",
-        //     cnicBackImage:"Path to image",
-        //     signatureImage:"Path to image",
-        //     additionalRemarks:"Optional remarks",
-        //     noOfBarcodes:10,
-        //     dealerReferred:true,
-        //     referenceName:"Test Reference",
-        //     referenceMobile:"112311234567",
-        //     referenceSecurityId:"11FDGH675643657"
-        // }
+        if(edit){
+            var {data} = await axios.put(dev+'/dealer/editDealer',{
+                data:obj,
+                id:state.user._id
+            })
+            if(data.data.message=='Success'){
+                alert('Form editted Successfull')
+                // handleEvent('edit-form')
+                navigate("/")
 
-        // console.log(obj)
-        var data = await axios.post('https://40e2-75-119-139-19.ngrok.io/dealer/addDealer',obj)
-        // console.log(data)
-        if(data.data.message=='Success'){
-            alert('Successfull')
+            }else{
+                console.log('There is an error')
+            }    
         }else{
-            console.log('There is an error')
+            var data = await axios.post(dev+'/dealer/addDealer',obj)
+            if(data.data.message=='Success'){
+                alert('Form submitted Successfull')
+                // handleEvent('submit-form')
+                navigate("/")
+            }else{
+                console.log('There is an error')
+            }    
         }
     }
 
+    // const handleEvent=async(val)=>{
+    //     var getId =  localStorage.getItem('HabibId')
+    //     var type = localStorage.getItem('type')
+    
+    //     if(type=='SuperAdmin'){
+    //       var obj={
+    //         logType:val,
+    //         operationBy:'superadmin',
+    //       }
+    //     }else{
+    //       var obj={
+    //         logType:val,
+    //         operationBy:'user',
+    //         user:getId
+    //       }
+    //     }
+    
+    //     var {data} = await axios.post(dev+'/dealer/testCreateLog',obj);
+    //     if(data.message=='Success'){
+    //       console.log('successful')
+    //         navigate("/")
+    //         }else{
+    //       console.log('falied-->',data)
+    //     }
+    //   }
 
     return (
         <div className='formSubMain'>
@@ -195,6 +302,8 @@ const Form2 = ({front,back,profile,sign}) => {
         <p>Number of Forms</p>
             <input className='form1Input formSubDivFull'  
             placeholder='No. of forms'
+            type={'number'}
+            min={0}
             value={formNo}
             onChange={e=>setFormNo(e.target.value)}
             />
@@ -254,6 +363,15 @@ const Form2 = ({front,back,profile,sign}) => {
             />            
         </Grid>
     </Grid>
+    <br/>
+    {
+        alertShow &&
+    <Alert severity="error">
+  <AlertTitle>Error</AlertTitle>
+        <strong>{alertTxt}</strong>
+</Alert>
+    }
+
     <button className='SaveBtn'
     onClick={()=>submit()}
     >Save</button>

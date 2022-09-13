@@ -8,44 +8,26 @@ import CnicIcon from './../assets/cnicicon.svg';
 import './FormPage.css';
 import axios from 'axios';
 import { dev } from '../config/routes';
-import { useNavigate } from 'react-router-dom';
-const FormPage = () => {
+import { useLocation } from 'react-router-dom';
 
-    const [page,setPage] = useState(0)
+const Edit = () => {
+
     var [profile,setProfile] = useState('');
     var [front,setFront] = useState('');
     var [back,setBack] = useState('');
     var [sign,setSign] = useState('');
-    var [showCreate,setShowCreate] = useState(false);
-    var navigate = useNavigate()
-    
+    var {state} = useLocation();
+    console.log(state)
+
     useEffect(()=>{
-    var userId =   localStorage.getItem('HabibId')
-    if(!userId){
-      navigate('/login')
-    }
-        fetching()
-      },[])
-    
-      var fetching =async ()=>{
-        var getId =  localStorage.getItem('HabibId')
-        var type = localStorage.getItem('type')
-        if(type=='SuperAdmin'){
-        setShowCreate(true)
-        }else{
+
         
-        var getPreviliges =  JSON.parse(localStorage.getItem('privileges'))
-        console.log(getPreviliges,'---',getId)
-        var a = getPreviliges.find(printPrivilage)
-        showCreate = a==undefined ? false : true
-        setShowCreate(showCreate)
-      }    
-      }
-        
-      var printPrivilage=(val)=>{
-        return val=='create-form'
-      }
-    
+        setFront(state.user.front)
+        setBack(state.user.back)
+        setProfile(state.user.profile)
+        setSign(state.user.sign)
+
+    },[])
 
 var handleProfile = async (e)=>{
 
@@ -119,34 +101,17 @@ var handleSign = async (e)=>{
     <div>
         <Header active='form' />
         <div className='formPageParent'>
-        {
-          !showCreate &&
-          <Alert severity="error" style={{maxWidth:'80%',margin:'auto',marginTop:20}}>
-          <AlertTitle>Error</AlertTitle>
-                <strong>You are not allowed to create a form</strong>
-        </Alert>
-                }
 
-            {
-               showCreate  &&
             <Grid container>
                 <Grid item md={8} sm={8} xs={12}>
                     <div className='formsMain'>
-                    <div className='formBtnsMain'>
-                        <div className={page==0 ? 'selected' :'Not_selected'} onClick={()=>setPage(0)}>
-                            <span>Client Registration</span>
-                        </div>
-                        <div className={page==1 ? 'selected' :'Not_selected'} onClick={()=>setPage(1)}>
-                        <span>Dealer Registration</span>
-                        </div>
-                    </div>
                     {
-                        (page==0) &&
-                        <Form1 edit={false} front={front} back={back} profile={profile} sign={sign} />
+                        (state?.type=='user') &&
+                        <Form1 edit={true} state={state} front={front} back={back} profile={profile} sign={sign} />
                     }
                     {
-                        (page==1) &&
-                        <Form2 edit={false} front={front} back={back} profile={profile} sign={sign} />
+                        !(state?.type=='user') &&
+                        <Form2 edit={true} state={state} front={front} back={back} profile={profile} sign={sign} />
                     }
 
                     </div>
@@ -187,10 +152,9 @@ var handleSign = async (e)=>{
                     </div>
                 </Grid>
             </Grid>
-            }
             </div>
     </div>
   )
 }
 
-export default FormPage
+export default Edit

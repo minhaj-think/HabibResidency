@@ -1,0 +1,46 @@
+.formSelect{
+    margin-top: 10px;
+}
+.selectMain{
+    /* background-color: red; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.selectSubMain{
+    width: 50%;
+    margin-top: 5px;
+}
+.selectSubMain span{
+    margin-left: 5px;
+    position: relative;
+    top: -2px;
+}
+.editPassBtn{
+    color: black !important;
+    background-color: #fff !important;
+    border: 1px solid black !important;
+    /* color: #f05568; */
+}
+
+.editPassBtn:hover{
+    color: #fff !important;
+    background-color: black !important;
+    border: 1px solid black !important;
+    /* color: #f05568; */
+}
+
+.delPassBtn{
+    color: red !important;
+    background-color: #fff !important;
+    border: 1px solid red !important;
+    /* color: #f05568; */
+}
+
+.delPassBtn:hover{
+    color: #fff !important;
+    background-color: red !important;
+    border: 1px solid red !important;    /* color: #f05568; */
+
+}

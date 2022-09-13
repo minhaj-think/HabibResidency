@@ -1,10 +1,61 @@
 import React,{useState} from 'react'
 import './login.css';
-import Logo from './../assets/HabibLogo.png'
+import Logo from './../assets/HabibLogo.png';
+import { Grid ,Alert,AlertTitle} from '@mui/material';
+import axios from 'axios';
+import { dev } from '../config/routes';
+import { useNavigate } from 'react-router-dom';
+import Switch from '@mui/material/Switch';
+
 const Login = () => {
 
     var [email,setEmail] = useState("");
+    var [supper,setSuper] = useState(false);
     var [password,setPassword] = useState("");
+    var [alertTxt,setAlertTxt] = useState('');
+    var [alertShow,setAlertShow] = useState(false);
+    
+    var naivgate = useNavigate();
+
+  const handleSubmit =async()=>{
+
+    if(supper){
+      var {data} = await axios.post(dev+'/admin/adminLogin',{
+        email,password
+      })
+
+      if(data.message=='Success'){
+        localStorage.setItem('type','SuperAdmin')
+        localStorage.setItem('HabibId',data.doc._id)
+        naivgate('/')
+      }
+      else{
+        setAlertShow(true)
+        setAlertTxt(data.err)
+      }
+  
+    }
+    
+    else{
+      var {data} = await axios.post(dev+'/subadmin/loginSubadmin',{
+        email,password
+      })
+      if(data.message=='Success'){
+        localStorage.setItem('HabibId',data.doc._id)
+        localStorage.setItem('type','SubAdmin')
+        localStorage.setItem( 'privileges',JSON.stringify(data.doc.privileges) )
+        naivgate('/')
+      }
+      else{
+        setAlertShow(true)
+        setAlertTxt(data.err)
+      }
+    
+    }
+
+
+  }
+
 
   return (
     <div className='loginMain'>
@@ -29,7 +80,28 @@ const Login = () => {
             value={password}
             onChange={e=>setPassword(e.target.value)}
             />
-            <button className='loginBtn'>Login</button>
+            <br/>
+            <br/>
+            <span className='switchTxt'>SubAdmin</span>
+            <Switch color='error' 
+            value={supper}
+            onChange={()=>{
+              setSuper(!supper)
+            }}
+            />
+            <span className='switchTxt'>SuperAdmin</span>
+            {
+        alertShow &&
+    <Alert severity="error">
+  <AlertTitle>Error</AlertTitle>
+        <strong>{alertTxt}</strong>
+</Alert>
+    }
+
+            <br/>
+            <button className='loginBtn'
+            onClick={handleSubmit}
+            >Login</button>
         </div>
 
         </div>

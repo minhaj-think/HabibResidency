@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import './AccountListing.css';
 import {Grid} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
-import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
+import {MdKeyboardArrowRight,MdKeyboardArrowLeft, MdFaceRetouchingNatural} from 'react-icons/md'
+import AccountModal from './AccountModal/AccountModal.js';
+import EditAccountModal from './AccountModal/EditAccountModal.js';
+import axios from 'axios'
+import { dev } from '../../config/routes';
 
 const AccountListing = () => {
 
     var [windowWidth,setWindowWidth] = useState(window.outerWidth)
+    var [open,setOpen] = useState(false)
 
     window.addEventListener('resize',()=>{
         setWindowWidth(window.outerWidth)
@@ -14,27 +19,42 @@ const AccountListing = () => {
     
     var [headingChecked,setHeadingChecked] = useState(false)
     var [activeIndex,setActiveIndex] = useState(1)
+    var [adminsList,setAdminsList] = useState([])
     var [pageArray,setPageArray] = useState([])
-    var [arr,setArr] = useState([
-        {checked:false,name:'abcd',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Karachi'},
-        {checked:true,name:'qrst',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Lahore'},
-        {checked:false,name:'ijkl mnop',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Chicago'},
-        {checked:false,name:'efgh',cnic:'1220102120412',mobile:'02910291021',id:'0987654',city:'Sydney'},
-    ])
+    var [pageLength,setPageLength] = useState(2)
+    var [editOpen,setEditOpen] = useState(false)
+    var [arr,setArr] = useState([])
     var [a,seta] = useState(false)
-
-    var pageLength = 10
+    var [selectedIem,setSelectedIem] = useState('')
+    var [refresh,setRefresh] = useState(false)
+    
+    
     useEffect(()=>{
-        pageArray=[];
-        for(let i=0;i<pageLength;i++){
-            pageArray=[...pageArray,i+1]
-            setPageArray(pageArray)
+        fetching()
+    },[activeIndex,refresh])
+
+useEffect(()=>{
+    setTimeout(()=>{
+    handlePagination(1)
+    
+    },2000)
+},[])
+
+    var fetching =async ()=>{
+        var {data} = await axios.post(dev+'/subadmin/getSubadmins/'+activeIndex)
+        if(data.message=='Success'){
+            setAdminsList(data.doc.admins)
+            pageLength=data.doc.pages
+            setPageLength(pageLength)
+            console.log(data)
+        
+        }else{
+            console.log('failed')
         }
-        handlePagination(1)
-    },[])
+
+            }
 
     var handlePagination = currentPage =>{
-
         if(currentPage=='prev'){
             currentPage=Math.floor(activeIndex/2)
         }else
@@ -44,7 +64,11 @@ const AccountListing = () => {
 
         // less than five
         if(pageLength<6){
-            setPageArray([1,2,3,4,5])
+            pageArray=[];
+            for(let i=0;i<pageLength;i++){
+                pageArray=[...pageArray,i+1]
+            }
+            setPageArray(pageArray)
         }
         else{
             // for 1 and 2
@@ -72,51 +96,82 @@ const AccountListing = () => {
         setActiveIndex(currentPage)
     }
 
+    var handleStatus=async(val)=>{
 
+        if(val.enabled){
+
+            var {data} = await axios.put(dev+'/subadmin/updateAdminStatus',{
+                id:val._id,
+                status:false
+            })
+                if(data.message){
+                    console.log('true-->',data)
+                fetching()
+            }else{
+                    console.log('true-->Error',data)
+                }
+
+        }else{
+
+            var {data} = await axios.put(dev+'/subadmin/updateAdminStatus',{
+                id:val._id,
+                status:true
+            })
+            if(data.message){
+                console.log('false-->',data)
+                fetching()
+            }else{
+                console.log('false-->Error',data)
+            }
+
+        }
+
+    }
+    
     return (
         <>
+        <EditAccountModal setRefresh={setRefresh} open={editOpen} selectedIem={selectedIem} setOpen={setEditOpen} />
+        <AccountModal open={open} setOpen={setOpen} />
     <div className='AccountlistingMain listingMain'>
 
         <Grid container className={'listingHeadings'}>
-                    <Grid item md={1} sm={0.5} xs={0.5}>
-                        <div className='CheckBox'
+                    {/* <Grid item md={1} sm={0.5} xs={0.5}> */}
+                        {/* <div className='CheckBox'
                         onClick={()=>{
                             setHeadingChecked(!headingChecked)
                         }}
                         >
                             <AiOutlineCheck color={headingChecked ? 'red' : '#fff'} style={{height:'80%'}} />
-                        </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
-                       <span>Name</span>
+                        </div> */}
+                    {/* </Grid> */}
+                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={3} xs={2.8}>
+                       <span style={{marginLeft:'10px'}}>UserName</span>
                         </Grid>
-                    <Grid item md={1.5} sm={1.75} xs={2}>
-                    <span>CNIC</span>
+                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <span>Email</span>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
-                       <span>Mobile Number</span>
+                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <span>Status</span>
                     </Grid>
-                    <Grid item md={2} sm={2} xs={1.5}>
-                       <span>Security ID</span>
+
+                    <Grid item md={windowWidth>1100 ? 2.5 : 2} sm={2.25} xs={2.2}>
+                       <span>Password</span>
                     </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>City</span>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2}>
-                    <div className='AddBtn'>
+                    <Grid item md={1.5} sm={1.5} xs={2} style={{display:'flex',justifyContent:'center'}}>
+                    <div className='AddBtn' onClick={()=>setOpen(true)}>
                         <span>Add</span>
                     </div>
                     </Grid>
                 </Grid>
 
 
-            { 
-                arr.map((v,i)=>{
+            { adminsList &&
+                adminsList.map((v,i)=>{
                     return(
                     <div className={v.checked ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
-                    <Grid item md={1} sm={0.5} xs={0.5}>
-                    <div className='subColDiv' >
+                    {/* <Grid item md={1} sm={0.5} xs={0.5}> */}
+                    {/* <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
                             arr[i].checked = !v.checked;
@@ -126,36 +181,38 @@ const AccountListing = () => {
                         >
                             <AiOutlineCheck color={v.checked ? 'red' : '#fff'} style={{height:'80%'}} />
                         </div>
-                            </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={2.3}>
+                            </div> */}
+                    {/* </Grid> */}
+                    <Grid item md={windowWidth>1100 ? 3 : 3.5} sm={3} xs={2.8}>
                     <div className='subColDiv' >
-                       <span style={{wordBreak:'break-all'}} >{v.name}</span>
+                       <span style={{wordBreak:'break-all',marginLeft:'10px'}} >{v.username}</span>
                     </div>
                         </Grid>
-                    <Grid item md={1.5} sm={1.75} xs={2}>
+                    <Grid item md={2.5} sm={1.75} xs={2}>
                     <div className='subColDiv' >
-                    <span style={{wordBreak:'break-all'}} >{v.cnic}</span>
+                    <span style={{wordBreak:'break-all'}} >{v.email}</span>
                     </div>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
-                    <div className='subColDiv' >
-                       <span style={{wordBreak:'break-all'}} >{v.mobile}</span>
+                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <div className={v.enabled ? 'subColDiv enabled' :'subColDiv disabled'} 
+                    onClick={()=>handleStatus(v)}
+                    >
+                    <span style={{wordBreak:'break-all'}} >{v.enabled ? 'click to suspend' : 'click to restore'}</span>
                     </div>
                     </Grid>
-                    <Grid item md={2} sm={2} xs={1.5}>
+                    <Grid item md={2.5} sm={1.5} xs={1.5}>
                     <div className='subColDiv' >
-                       <span style={{wordBreak:'break-all'}} >{v.id}</span>
-                    </div>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={1.5}>
-                    <div className='subColDiv' >
-                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
+                       <span style={{wordBreak:'break-all'}} >{v.password}</span>
                     </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
                     <div className='subColDiv' >
-                    <div className='EditBtn'>
+                    <div className='EditBtn'
+                    onClick={()=>{
+                        setSelectedIem(v)
+                        setEditOpen(true)
+                    }}
+                    >
                         <span>Edit</span>
                     </div>
                     </div>
@@ -169,7 +226,11 @@ const AccountListing = () => {
     </div>
     <div className='listingLastDiv listingLastDiv'>
             <div className='paginationDiv'>
-                <div className='PrevPagBtn'>
+                <div className='PrevPagBtn'
+                onClick={()=>{
+                    if(activeIndex>1)
+                    handlePagination(activeIndex-1)
+                    }}>
                     <MdKeyboardArrowLeft/>
                 </div>
                 {
@@ -180,13 +241,19 @@ const AccountListing = () => {
                     ))
                 }
 
-                <div className='NextPagBtn'>
+                <div className='NextPagBtn'
+                onClick={()=>{
+                    if(activeIndex<pageLength){
+                        handlePagination(activeIndex+1)
+                    }
+                }}
+                >
                     <MdKeyboardArrowRight/>
                 </div>
             </div>
-            <div className='deleteBtn'>
+            {/* <div className='accountDelBtn'>
                 <span className='deleteTxt'>Delete</span>
-            </div>
+            </div> */}
             </div>
 
     </>

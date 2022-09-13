@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import './Header.css';
 import {Grid} from '@mui/material'
 import Logo from './../../assets/HabibLogo.png';
@@ -8,6 +8,15 @@ import {useNavigate} from 'react-router-dom'
 const Header = ({active}) => {
     
     var navigate = useNavigate()
+    var [show,setShow] = useState(false)
+    useEffect(()=>{
+        var type = localStorage.getItem('type')
+        if(type=='SuperAdmin'){
+            setShow(true)
+        }else{
+            setShow(false)
+        }
+    },[])
 
     return (
     <div className='headerMain'>
@@ -31,14 +40,20 @@ const Header = ({active}) => {
             <span className='headerLink3' onClick={()=>navigate('/scan')}>SCAN BARCODE</span>
             <div  className={active=='scan' ? 'show' : 'hide'} />
             </div>
+            {
+                show &&
             <div className='headerTitle4 headerDiv'>
             <span className='headerLink4' onClick={()=>navigate('/manage')}>ACCOUNTS</span>
             <div  className={active=='manage' ? 'show' : 'hide'} />
             </div>
+            }
+            {
+                show &&
             <div className='headerTitle5 headerDiv'>
             <span className='headerLink5' onClick={()=>navigate('/logs')}>LOGS</span>
             <div  className={active=='logs' ? 'show' : 'hide'} />
             </div>
+            }
         </div>
     </div>
   )

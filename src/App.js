@@ -8,6 +8,7 @@ import AccountsManagement from './pages/AccountsManagement.js';
 import {BrowserRouter as Router,  Route,Routes} from 'react-router-dom';
 import Header from './component/Header/Header';
 import Login from './pages/login.js';
+import Edit from './pages/Edit.js';
 
 function App() {
 
@@ -16,9 +17,10 @@ function App() {
     <Router>
     <div className="App">
     <Routes>
-    <Route  path='/' element={<Login/>} />
-    <Route  path='dash' element={<Dashboard/>} />
     <Route  path='form' element={<FormPage/>} />
+    <Route  path='/' element={<Dashboard/>} />
+    <Route  path='login' element={<Login/>} />
+    <Route  path='edit' element={<Edit/>} />
     <Route  path='scan' element={<ScanCode/>} />
     <Route  path='manage' element={<AccountsManagement/>} />
     <Route  path='logs' element={<LogsPage/>} />

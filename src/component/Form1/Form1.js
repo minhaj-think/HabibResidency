@@ -1,10 +1,16 @@
 import React,{useState,useEffect} from 'react'
 import './Form1.css';
-import { Grid } from '@mui/material';
+import { Grid ,Alert,AlertTitle} from '@mui/material';
 import axios from 'axios';
+import { dev } from '../../config/routes';
+import { useNavigate } from 'react-router-dom';
 
-const Form1 = ({front,back,profile,sign}) => {
+const Form1 = ({front,back,profile,sign,edit,state}) => {
 
+    var [alertTxt,setAlertTxt] = useState('');
+    var [alertShow,setAlertShow] = useState(false);
+    var navigate = useNavigate()
+    
     var [name,setName] = useState('');
     var [cnic,setCnic] = useState('');
     var [rel,setRel] = useState('');
@@ -30,7 +36,99 @@ const Form1 = ({front,back,profile,sign}) => {
     var [relation,setRelation] = useState("");
     var [kimCelNumber,setKimCelNumber] = useState("");
 
+
+    useEffect(()=>{
+
+        if(edit && state){
+            setName(state.user.fName)
+            setCnic(state.user.CNIC)
+            setEmail(state.user.email)
+            setSecurityId(state.user.securityId)
+            setSurName(state.user.SWDO)
+            setNumber(state.user.phone)
+            setLandLine(state.user.landline)
+            setCurrentAddress(state.user.currentAddress)
+            setPermanentAddress(state.user.parmanentAddress)
+            setCity(state.user.city)
+            setCountry(state.user.country)
+            setPassport(state.user.passport)
+            setKimName(state.user.nextKinName)
+            setKimAddress(state.user.nextKinAddress)
+            setKimNumber(state.user.nextKinPhone)
+            setKimCelNumber(state.user.nextKinPhone)
+            setRemarks(state.user.additionalRemarks)
+            setRelation(state.user.nextKinRelation)
+            setLandLine(state.user.phone)
+            // SWDO:rel+'-'+surName,
+            // phone:numberCode+number,
+
+            // nextKinSWDO:kimRel+'-'+kimsurName,
+            // nextKinPhone:kimNumberCode+kimNumber,
+        }
+
+    },[])
+
     var submit = async()=>{
+        var getId =  localStorage.getItem('HabibId')
+        var type = localStorage.getItem('type')
+
+        setAlertShow(false)
+        if(profile==''){
+            setAlertShow(true)
+            setAlertTxt('Please select your profile picture first.')
+            return
+        }else if(front==''){
+            setAlertShow(true)
+            setAlertTxt('Please select front image of your CNIC .')
+            return
+        }else if(back==''){
+            setAlertShow(true)
+            setAlertTxt('Please select back side image of your CNIC .')
+            return
+        }else if(sign==''){
+            setAlertShow(true)
+            setAlertTxt('Please select your signature image.')
+            return
+        }else
+        if(!edit){
+        if(
+            name=='' ||
+            cnic=='' ||
+            securityId=='' ||
+            rel=='' ||
+            surName=='' ||
+            numberCode+number=='' ||
+            landLine=='' ||
+            currentAddress=='' ||
+            permanentAddress ||
+            city==''  ||
+            country==''  ||
+            passport==''  ||
+            kimName==''  ||
+            kimRel+'-'+kimsurName==''  ||
+            relation==''  ||
+            kimNumberCode==''  ||
+            kimNumber==''  ||
+            kimAddress==''  ||
+            remarks==''){
+            setAlertShow(true)
+            setAlertTxt('Please fill form completely.')
+            return
+        }
+    }
+    if(type=='SuperAdmin'){
+        //   logType:val,
+        var event={
+          operationBy:'superadmin',
+        }
+      }else{
+          //   logType:val,
+        var event={
+          operationBy:'user',
+          user:getId
+        }
+      }
+
         var obj={
             fName:name,
             CNIC:cnic,
@@ -50,17 +148,63 @@ const Form1 = ({front,back,profile,sign}) => {
             cnicFrontImage:front,
             cnicBackImage:back,
             signatureImage:sign,
-            clientImage:profile
+            clientImage:profile,
+            ...event,
+            logType:edit ? 'edit-form' : 'submit-form'
+
         }
-        var {data} = await axios.post('https://40e2-75-119-139-19.ngrok.io/client/addClient',obj)
-        if(data.message=='Success'){
-            alert('Successfull')
+        if(edit){
+            var {data} = await axios.put(dev+'/client/editClient',{
+                data:obj,
+                id:state.user._id
+            })
+            if(data.message=='Success'){
+                alert('Form editted Successfull')
+                // handleEvent('edit-form')
+                navigate("/")
+            }else{
+                console.log('There is an error')
+            }
+    
         }else{
-            console.log('There is an error')
+            var {data} = await axios.post(dev+'/client/addClient',obj)
+            if(data.message=='Success'){
+                alert('Form submitted Successfull')
+                // handleEvent('submit-form')
+                navigate("/")
+            }else{
+                console.log('There is an error')
+            }
+    
         }
-        // console.log('object==>',obj)
     }
 
+    const handleEvent=async(val)=>{
+        var getId =  localStorage.getItem('HabibId')
+        var type = localStorage.getItem('type')
+    
+        if(type=='SuperAdmin'){
+          var obj={
+            logType:val,
+            operationBy:'superadmin',
+          }
+        }else{
+          var obj={
+            logType:val,
+            operationBy:'user',
+            user:getId
+          }
+        }
+    
+        var {data} = await axios.post(dev+'/dealer/testCreateLog',obj);
+        if(data.message=='Success'){
+          console.log('successful')
+            navigate("/")
+            }else{
+          console.log('falied-->',data)
+        }
+      }
+    
 
     return (
         <div className='formSubMain'>
@@ -264,6 +408,15 @@ const Form1 = ({front,back,profile,sign}) => {
             />            
         </Grid>
     </Grid>
+    <br/>
+    {
+        alertShow &&
+    <Alert severity="error">
+  <AlertTitle>Error</AlertTitle>
+        <strong>{alertTxt}</strong>
+</Alert>
+    }
+
     <button className='SaveBtn'
     onClick={submit}
     >Save</button>

@@ -6,6 +6,20 @@
     /* padding-bottom: 10px; */
     /* padding-top: 10px; */
 }
+.disabled span{
+    color: green;
+    cursor: pointer;
+}
+.enabled span{
+    color: red;
+    cursor: pointer;
+}
+
+.disabled:hover,.enabled:hover{
+    text-decoration: underline;
+}
+
+
 .searchDiv{
     background-image: url('./../../assets/search\ bar.png');
     /* width: 10%; */
@@ -92,6 +106,7 @@ input:focus{
     height: 35px;
     margin-top: -5px;
     background-size: 100% 100%;
+    cursor: pointer;
 }
 .EditBtn span{
 font-size: 14px;
@@ -172,6 +187,16 @@ p,span{
     width: 60%;
     height: 35px;
     margin-top: -5px;
+}
+
+.accountDelBtn{
+    background-color: red;
+    min-width: 100px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 5px;
+    cursor: pointer;
+    /* max-width: 100px !important; */
 }
 
 @media only screen and (max-width:1200px){

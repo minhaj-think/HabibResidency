@@ -93,6 +93,13 @@ input:focus{
     justify-content: center;
 }
 
+.btnsMain{
+    display: flex;
+    flex-direction: row;
+    min-width: 30%;
+    justify-content: space-between;
+}
+
 .PrintBtn{
     background-image: url('./../../assets/printbarcodebutton.png');
     background-position: center;
@@ -124,7 +131,7 @@ align-items: center;
 }
 
 .deleteBtn{
-    width: 8%;
+    min-width: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -132,11 +139,33 @@ align-items: center;
     background-size: 100% 100%;
     background-position: center;
     background-image: url('./../../assets/form\ save\ button.png');
+    cursor: pointer;
 }
 .deleteTxt{
     color: #fff;
     font-size: 14px;
 }
+
+.editBtn{
+    min-width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 33px;
+    background-color: #fff !important ;
+    /* background-size: 100% 100%; */
+    background-position: center;
+    border: 1px solid #f05568;
+    border-radius: 5px;
+    cursor: pointer;
+    /* background-image: url('./../../assets/form\ save\ button.png'); */
+}
+.editBtn span{
+    color: #f05568;
+    font-size: 14px;
+}
+
+
 .paginationDiv{
     display: flex;
     flex-direction: row;
@@ -184,15 +213,19 @@ align-items: center;
     .searchDiv{
     width: 50%;
 }
-.deleteBtn{
+.deleteBtn,.editBtn{
     padding-left: 10px;
     padding-right: 10px;
     height: 25px;
+    min-width: 35%;
+}
+.editBtn{
+    height: 23px;
 }
 .CenterPagBtn{
     font-size: 10px;
 }
-.deleteBtn span{
+.deleteBtn span,.editBtn span{
     font-size: 10px;
 }
 .listingHeadings,.listingItem{
@@ -218,6 +251,12 @@ align-items: center;
 }
 .SearchInput{
     font-size: 12px;
+}
+}
+
+@media only screen and (max-width:750px){
+.btnsMain{
+    margin-right: 10px;
 }
 }
 
@@ -262,18 +301,25 @@ font-size: 14px;
 .PrintBtn span{
     padding-top: 4px;
 }
-.deleteBtn{
+.deleteBtn,.editBtn{
     padding-left: 10px;
     padding-right: 10px;
     height: 20px;
 }
-.deleteBtn span{
+.deleteBtn span,.editBtn span{
     font-size: 10px;
 }
 
 }
 
 
+@media only screen and (max-width:550px){
+    .editBtn,.deleteBtn{
+        min-width: 30%;
+        /* margin-right: 20px; */
+    }
+    }
+    
 @media only screen and (max-width:440px){
 
     .PrintBtn span{
@@ -293,5 +339,9 @@ font-size: 14px;
     .listingHeadings{
         font-size: 7px;
      }   
+        .btnsMain{
+         width: 40%;
+            /* margin-right: 25px; */
+        }
     
 }

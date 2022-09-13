@@ -1,10 +1,11 @@
 .ScanImgDiv{
-    width: 20vw;
-    height: 20vw;
+    width: 25vw;
+    height: 18vw;
     background-color: white;
     margin: auto;
     margin-top: 10vh;
     box-shadow: 1px 1px 10px 0.5px #cccccc;
+    overflow: hidden;
 }
 .ScanCompTxt{
     font-family: Poppins;

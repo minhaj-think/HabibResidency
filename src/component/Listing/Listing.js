@@ -3,10 +3,13 @@ import './Listing.css';
 import {Grid} from '@mui/material';
 import {AiOutlineCheck} from 'react-icons/ai';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
+import {GrEdit} from 'react-icons/gr'
 import axios from 'axios';
+import {dev} from './../../config/routes.js';
 import ListingModal from './../ListingModal/ListingModal.js'; 
+import { useNavigate } from 'react-router-dom';
 
-const Listing = () => {
+const Listing = ({showScan,showSearch,showDelete,showEdit}) => {
 
     var [windowWidth,setWindowWidth] = useState(window.outerWidth)
     var [clients,setClients] = useState([])
@@ -17,10 +20,14 @@ const Listing = () => {
     var [pageArray,setPageArray] = useState([])
     const [open, setOpen] = useState(false);
     const [barCode, setBarCode] = useState('');
-    var [checked,setChecked] = useState(new Array(20).fill(false))
-    
+    var [filtered,setFiltered] = useState([]);
+    var [showFiltered,setShowFiltered] = useState(false);
+    var [checked,setChecked] = useState(new Array(20).fill(''))
+    var navigate = useNavigate();
+
     useEffect(()=>{
         fetchingData()
+        setChecked(new Array(20).fill(''))
     },[activeIndex])
 
     useEffect(()=>{
@@ -31,7 +38,6 @@ const Listing = () => {
         }
         handlePagination(1)
         setTimeout(()=>{
-            console.log('yes')
 handlePagination(1)
 
         },2000)
@@ -41,13 +47,15 @@ handlePagination(1)
 
     var fetchingData = async()=>{
         setClients([])
-        var {data} = await axios.post('https://40e2-75-119-139-19.ngrok.io/client/getClients/'+activeIndex);
+        console.log('fetcing')
+        var {data} = await axios.post(dev+'/client/getClients/'+activeIndex);
         if(data.message=='Success'){
             setClients(data.doc.clients)
-            // console.log(data.doc.clients)
+            console.log(data.doc)
             pageLength=Math.ceil(Number(data.doc.total)/20)
-            // console.log(pageLength)
             setPageLength(pageLength)
+        }else{
+            console.log(data)
         }
     }
 
@@ -98,6 +106,85 @@ handlePagination(1)
         setActiveIndex(currentPage)
     }
 
+    var handleDelete=async()=>{
+        var getId =  localStorage.getItem('HabibId')
+        var type = localStorage.getItem('type')
+    
+        if(type=='SuperAdmin'){
+          var event={
+            logType:'delete-form',
+            operationBy:'superadmin',
+          }
+        }else{
+          var event={
+            logType:'delete-form',
+            operationBy:'user',
+            user:getId
+          }
+        }
+
+        var list = [];
+        checked.map((v)=>{
+            if(v!=''){
+                list.push(v)
+            }
+        })
+        console.log(list)
+        var obj={
+            clientIds : list,
+            ...event
+        }
+        console.log(obj)
+        var {data} = await axios.delete(dev+'/admin/deleteClients',{data:obj});
+
+        if(data.message=='Success'){
+            console.log('deleted')
+            fetchingData()
+            // handleEvent()
+        }else{
+            console.log('error=>',data)
+        }
+
+    }
+
+
+
+    const handleChangeSearch =async (e)=>{
+        var getId =  localStorage.getItem('HabibId')
+        var type = localStorage.getItem('type')
+    
+        if(type=='SuperAdmin'){
+          var obj={
+            logType:'search-form',
+            operationBy:'superadmin',
+          }
+        }else{
+          var obj={
+            logType:'search-form',
+            operationBy:'user',
+            user:getId
+          }
+        }
+    
+        try{
+
+        var {data} = await axios.post(dev+'/client/searchClient',{
+            securityId: e.target.value,
+            ...obj
+        })
+        if(data.message=='Success'){
+            setShowFiltered(true)
+            filtered=[data.doc]
+            setFiltered(filtered)
+        }else{
+            setShowFiltered(false)
+        }
+        console.log(filtered)
+    }
+catch(err){
+    console.log('err=>',err)
+}
+    }
 
     return (
         <>
@@ -105,30 +192,37 @@ handlePagination(1)
     <div className='listingMain'>
         <div className='listingTItleDiv'>
             <span className='listingTitle'>Client Details</span>
+            {
+                showSearch &&
             <div className='searchDiv'>
                 <input className='SearchInput'
                 placeholder='Search here...'
+                onChange={handleChangeSearch}
                 />
             </div>
+            }
         </div>
 
         <Grid container className={'listingHeadings'}>
-                    <Grid item md={1} sm={0.5} xs={0.5}>
-                        <div className='CheckBox'
+                    <Grid item md={0.8} sm={0.5} xs={0.5}>
+                        {/* <div className='CheckBox'
                         onClick={()=>{
                             setHeadingChecked(!headingChecked)
                         }}
                         >
                             <AiOutlineCheck color={headingChecked ? 'red' : '#fff'} style={{height:'80%'}} />
-                        </div>
+                        </div> */}
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                       {/* <span> <GrEdit color='gray' /> </span> */}
+                        </Grid>
+                    <Grid item md={windowWidth>1100 ? 2.1 : 2.3} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
                        <span>{windowWidth>500 ? 'Name as per CNIC' : 'Name in CNIC' }</span>
                         </Grid>
                     <Grid item md={1.5} sm={1.75} xs={2}>
                     <span>CNIC</span>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
+                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
                        <span>Mobile Number</span>
                     </Grid>
                     <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
@@ -142,28 +236,50 @@ handlePagination(1)
                 </Grid>
 
 
-            { 
+            { !showFiltered &&
                 clients.map((v,i)=>{
                     return(
                     <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
                     <Grid container className={''}>
-                    <Grid item md={1} sm={0.5} xs={0.5}>
+                    <Grid item md={0.8} sm={0.5} xs={0.5}>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
-                            checked[i] = !checked[i];
+                            if(checked[i]!=''){
+                                checked[i]=''
+                            }else{
+                                checked[i] = v._id;
+                            }
                             setChecked(checked)
+                            console.log(checked)
                             setHeadingChecked1(!headingChecked1)
                         }}
                         >
                             {
-                                checked[i] &&
+                                checked[i]!='' &&
                             <AiOutlineCheck color={'red'} style={{height:'80%'}} />
                             }
                         </div>
                         </div>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}
+                    style={{display:'flex',alignItems:'center'}}
+                    >
+                        {
+                            showEdit &&
+                       <span> <GrEdit color='gray' 
+                       onClick={()=>{
+                        navigate('/edit',{
+                            state:{
+                                user:v,
+                                type : 'user'
+                            }
+                        })
+                       }}
+                       /> </span>
+                        }
+                        </Grid>
+                    <Grid item md={windowWidth>1100 ? 2.1 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
                        <div className='subColDiv'>
                        <span style={{wordBreak:'break-all'}} >{v.fName}</span>
                        </div>
@@ -173,7 +289,7 @@ handlePagination(1)
                     <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
                        </div>
                     </Grid>
-                    <Grid item md={windowWidth>1100 ? 1.5 : 2} sm={2.25} xs={2.2}>
+                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
                        <div className='subColDiv'>
                        <span>{v.phone}</span>
                        </div>
@@ -189,6 +305,8 @@ handlePagination(1)
                        </div>
                     </Grid>
                     <Grid item md={1.5} sm={1.5} xs={2}>
+                        {
+                            showScan &&
                        <div className='subColDiv'>
                     <div className='PrintBtn' onClick={()=>{
                         setBarCode(v.barcode)
@@ -198,12 +316,102 @@ handlePagination(1)
                         <span>Print Barcode</span>
                        </div>
                     </div>
+                        }
                     </Grid>
                 </Grid>
         </div>
                 )
                         })
             }
+
+{ showFiltered &&
+                filtered.map((v,i)=>{
+                    return(
+                    <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
+                    <Grid container className={''}>
+                    <Grid item md={0.8} sm={0.5} xs={0.5}>
+                    <div className='subColDiv' >
+                        <div className='CheckBox'
+                        onClick={()=>{
+                            if(checked[i]!=''){
+                                checked[i]=''
+                            }else{
+                                checked[i] = v._id;
+                            }
+                            setChecked(checked)
+                            console.log(checked)
+                            setHeadingChecked1(!headingChecked1)
+                        }}
+                        >
+                            {
+                                checked[i]!='' &&
+                            <AiOutlineCheck color={'red'} style={{height:'80%'}} />
+                            }
+                        </div>
+                        </div>
+                    </Grid>
+                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}
+                    style={{display:'flex',alignItems:'center'}}
+                    >
+                        {
+                            showEdit &&
+                       <span> <GrEdit color='gray' 
+                       onClick={()=>{
+                        navigate('/edit',{
+                            state:{
+                                user:v,
+                                type : 'user'
+                            }
+                        })
+                       }}
+                       /> </span>
+                        }
+                        </Grid>
+                    <Grid item md={windowWidth>1100 ? 2.1 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.fName}</span>
+                       </div>
+                        </Grid>
+                    <Grid item md={1.5} sm={1.75} xs={2}>
+                       <div className='subColDiv'>
+                    <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
+                       </div>
+                    </Grid>
+                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
+                       <div className='subColDiv'>
+                       <span>{v.phone}</span>
+                       </div>
+                    </Grid>
+                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.securityId}</span>
+                       </div>
+                    </Grid>
+                    <Grid item md={1.5} sm={1.5} xs={1.5}>
+                       <div className='subColDiv'>
+                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
+                       </div>
+                    </Grid>
+                    <Grid item md={1.5} sm={1.5} xs={2}>
+                        {
+                            showScan &&
+                       <div className='subColDiv'>
+                    <div className='PrintBtn' onClick={()=>{
+                        setBarCode(v.barcode)
+                        setOpen(true)
+                        
+                        }}>
+                        <span>Print Barcode</span>
+                       </div>
+                    </div>
+                        }
+                    </Grid>
+                </Grid>
+        </div>
+                )
+                        })
+            }
+
 
     </div>
     <div className='listingLastDiv'>
@@ -233,9 +441,14 @@ handlePagination(1)
                     <MdKeyboardArrowRight/>
                 </div>
             </div>
-            <div className='deleteBtn'>
+{
+    showDelete &&
+            <div className='deleteBtn'
+            onClick={()=>handleDelete()}>
                 <span className='deleteTxt'>Delete</span>
             </div>
+        }
+
             </div>
 
     </>
