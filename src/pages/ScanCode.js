@@ -30,7 +30,6 @@ const ScanCode = () => {
     setShowScan(true)
     }else{
       var getPreviliges =  JSON.parse(localStorage.getItem('privileges'))
-      console.log(getPreviliges,'---',getId)
       var a = getPreviliges.find(printPrivilage)
       showScan = a==undefined ? false : true
       setShowScan(showScan)
@@ -48,7 +47,6 @@ const ScanCode = () => {
       setShow(true)
     }
   },[fetchedData])
-  console.log(fetchedData)
     return (
     <div>
         <Header active='scan' />

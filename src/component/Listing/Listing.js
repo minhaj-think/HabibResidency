@@ -8,6 +8,7 @@ import axios from 'axios';
 import {dev} from './../../config/routes.js';
 import ListingModal from './../ListingModal/ListingModal.js'; 
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Listing = ({showScan,showSearch,showDelete,showEdit}) => {
 
@@ -23,6 +24,7 @@ const Listing = ({showScan,showSearch,showDelete,showEdit}) => {
     var [filtered,setFiltered] = useState([]);
     var [showFiltered,setShowFiltered] = useState(false);
     var [checked,setChecked] = useState(new Array(20).fill(''))
+    var [progress,setProgress]  = useState(false);
     var navigate = useNavigate();
 
     useEffect(()=>{
@@ -47,11 +49,9 @@ handlePagination(1)
 
     var fetchingData = async()=>{
         setClients([])
-        console.log('fetcing')
         var {data} = await axios.post(dev+'/client/getClients/'+activeIndex);
         if(data.message=='Success'){
             setClients(data.doc.clients)
-            console.log(data.doc)
             pageLength=Math.ceil(Number(data.doc.total)/20)
             setPageLength(pageLength)
         }else{
@@ -109,7 +109,7 @@ handlePagination(1)
     var handleDelete=async()=>{
         var getId =  localStorage.getItem('HabibId')
         var type = localStorage.getItem('type')
-    
+        setProgress(true)
         if(type=='SuperAdmin'){
           var event={
             logType:'delete-form',
@@ -129,21 +129,20 @@ handlePagination(1)
                 list.push(v)
             }
         })
-        console.log(list)
         var obj={
             clientIds : list,
             ...event
         }
-        console.log(obj)
         var {data} = await axios.delete(dev+'/admin/deleteClients',{data:obj});
 
         if(data.message=='Success'){
-            console.log('deleted')
-            fetchingData()
+        setProgress(false)
+        fetchingData()
             // handleEvent()
         }else{
             console.log('error=>',data)
-        }
+        setProgress(false)
+    }
 
     }
 
@@ -179,7 +178,6 @@ handlePagination(1)
         }else{
             setShowFiltered(false)
         }
-        console.log(filtered)
     }
 catch(err){
     console.log('err=>',err)
@@ -203,45 +201,26 @@ catch(err){
             }
         </div>
 
-        <Grid container className={'listingHeadings'}>
-                    <Grid item md={0.8} sm={0.5} xs={0.5}>
-                        {/* <div className='CheckBox'
-                        onClick={()=>{
-                            setHeadingChecked(!headingChecked)
-                        }}
-                        >
-                            <AiOutlineCheck color={headingChecked ? 'red' : '#fff'} style={{height:'80%'}} />
-                        </div> */}
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
-                       {/* <span> <GrEdit color='gray' /> </span> */}
-                        </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.1 : 2.3} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
-                       <span>{windowWidth>500 ? 'Name as per CNIC' : 'Name in CNIC' }</span>
-                        </Grid>
-                    <Grid item md={1.5} sm={1.75} xs={2}>
-                    <span>CNIC</span>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
-                       <span>Mobile Number</span>
-                    </Grid>
-                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
-                       <span>Security ID</span>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <span>City</span>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2}>
-                    </Grid>
-                </Grid>
+        <div className={'clientLstItem' }>
+                       <div style={{minWidth:'6%',textAlign:'center'}}></div>
+                       <div style={{minWidth:'6%',textAlign:'center'}}></div>
+                       <p className='clientSubItemTitle'>Creation Date</p>
+                       <p className='clientSubItemTitle'>Name as per CNIC</p>
+                       <p className='clientSubItemTitle' >CNIC</p>
+                       <p className='clientSubItemTitle' >Phone Number</p>
+                       <p className='clientSubItemTitle' >Security Id</p>
+                       <p className='clientSubItemTitle' >City</p>
+                       <p style={{minWidth:'150px'}} >
+                       </p>
+                        </div>
 
 
             { !showFiltered &&
                 clients.map((v,i)=>{
                     return(
-                    <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
-                    <Grid container className={''}>
-                    <Grid item md={0.8} sm={0.5} xs={0.5}>
+                        <div key={i} className={checked[i] ? 'clientLstItem checkedItem' : 'clientLstItem' }>
+
+<div style={{minWidth:'6%',textAlign:'center'}}>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
@@ -251,23 +230,22 @@ catch(err){
                                 checked[i] = v._id;
                             }
                             setChecked(checked)
-                            console.log(checked)
+
                             setHeadingChecked1(!headingChecked1)
+
                         }}
                         >
                             {
                                 checked[i]!='' &&
                             <AiOutlineCheck color={'red'} style={{height:'80%'}} />
                             }
+                            </div>
+                            </div>
                         </div>
-                        </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}
-                    style={{display:'flex',alignItems:'center'}}
-                    >
-                        {
-                            showEdit &&
-                       <span> <GrEdit color='gray' 
+
+                            <div style={{minWidth:'6%',textAlign:'center'}}>
+                        {showEdit &&
+                       <p> <GrEdit color='gray'
                        onClick={()=>{
                         navigate('/edit',{
                             state:{
@@ -276,50 +254,28 @@ catch(err){
                             }
                         })
                        }}
-                       /> </span>
+                        /> </p>
                         }
-                        </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.1 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.fName}</span>
-                       </div>
-                        </Grid>
-                    <Grid item md={1.5} sm={1.75} xs={2}>
-                       <div className='subColDiv'>
-                    <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
-                       <div className='subColDiv'>
-                       <span>{v.phone}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.securityId}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2}>
-                        {
+                        </div>
+                       <p className='clientSubItemNormal'>{v.createdDate.split('T')[0]}</p>
+                       <p className='clientSubItemNormal'>{v.fName}</p>
+                       <p className='clientSubItemNormal' >{v.CNIC}</p>
+                       <p className='clientSubItemNormal' >{v.phone}</p>
+                       <p className='clientSubItemNormal' >{v.securityId}</p>
+                       <p className='clientSubItemNormal' >{v.city}</p>
+                       <p style={{minWidth:'150px'}} >
+                       {
                             showScan &&
-                       <div className='subColDiv'>
-                    <div className='PrintBtn' onClick={()=>{
-                        setBarCode(v.barcode)
+                    <div className='clientPrintBtn'
+                    onClick={()=>{
                         setOpen(true)
-                        
-                        }}>
-                        <span>Print Barcode</span>
-                       </div>
+                    }}
+                    >
+                        <span>Show Barcode</span>
                     </div>
-                        }
-                    </Grid>
-                </Grid>
-        </div>
+                    }
+                       </p>
+                        </div>
                 )
                         })
             }
@@ -327,9 +283,9 @@ catch(err){
 { showFiltered &&
                 filtered.map((v,i)=>{
                     return(
-                    <div key={i} className={checked[i] ? 'listingItem checkedItem' : 'listingItem'}>
-                    <Grid container className={''}>
-                    <Grid item md={0.8} sm={0.5} xs={0.5}>
+                        <div key={i} className={checked[i] ? 'clientLstItem checkedItem' : 'clientLstItem' }>
+
+<div style={{minWidth:'6%',textAlign:'center'}}>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
@@ -339,23 +295,22 @@ catch(err){
                                 checked[i] = v._id;
                             }
                             setChecked(checked)
-                            console.log(checked)
+
                             setHeadingChecked1(!headingChecked1)
+
                         }}
                         >
                             {
                                 checked[i]!='' &&
                             <AiOutlineCheck color={'red'} style={{height:'80%'}} />
                             }
+                            </div>
+                            </div>
                         </div>
-                        </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 0.4 : 0.4} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}
-                    style={{display:'flex',alignItems:'center'}}
-                    >
-                        {
-                            showEdit &&
-                       <span> <GrEdit color='gray' 
+
+                            <div style={{minWidth:'6%',textAlign:'center'}}>
+                        {showEdit &&
+                       <p> <GrEdit color='gray'
                        onClick={()=>{
                         navigate('/edit',{
                             state:{
@@ -364,50 +319,27 @@ catch(err){
                             }
                         })
                        }}
-                       /> </span>
+                        /> </p>
                         }
-                        </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.1 : 2.5} sm={2.5} xs={windowWidth>500 ? 2.3 : 2}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.fName}</span>
-                       </div>
-                        </Grid>
-                    <Grid item md={1.5} sm={1.75} xs={2}>
-                       <div className='subColDiv'>
-                    <span style={{wordBreak:'break-all'}} >{v.CNIC}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={windowWidth>1100 ? 2.2 : 2} sm={2.25} xs={2.2}>
-                       <div className='subColDiv'>
-                       <span>{v.phone}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={2} sm={2} xs={windowWidth>500 ? 1.5 : 1.8}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.securityId}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={1.5}>
-                       <div className='subColDiv'>
-                       <span style={{wordBreak:'break-all'}} >{v.city}</span>
-                       </div>
-                    </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2}>
-                        {
+                        </div>
+                       <p className='clientSubItemNormal'>{v.fName}</p>
+                       <p className='clientSubItemNormal' >{v.CNIC}</p>
+                       <p className='clientSubItemNormal' >{v.phone}</p>
+                       <p className='clientSubItemNormal' >{v.securityId}</p>
+                       <p className='clientSubItemNormal' >{v.city}</p>
+                       <p style={{minWidth:'150px'}} >
+                       {
                             showScan &&
-                       <div className='subColDiv'>
-                    <div className='PrintBtn' onClick={()=>{
-                        setBarCode(v.barcode)
+                    <div className='clientPrintBtn'
+                    onClick={()=>{
                         setOpen(true)
-                        
-                        }}>
-                        <span>Print Barcode</span>
-                       </div>
+                    }}
+                    >
+                        <span>Show Barcode</span>
                     </div>
-                        }
-                    </Grid>
-                </Grid>
-        </div>
+                    }
+                       </p>
+                        </div>
                 )
                         })
             }
@@ -445,7 +377,9 @@ catch(err){
     showDelete &&
             <div className='deleteBtn'
             onClick={()=>handleDelete()}>
-                <span className='deleteTxt'>Delete</span>
+                <span className='deleteTxt'>
+                {progress ? <CircularProgress color='error' size={13} /> : 'Delete'}
+                    </span>
             </div>
         }
 

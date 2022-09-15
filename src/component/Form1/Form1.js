@@ -4,12 +4,14 @@ import { Grid ,Alert,AlertTitle} from '@mui/material';
 import axios from 'axios';
 import { dev } from '../../config/routes';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Form1 = ({front,back,profile,sign,edit,state}) => {
 
     var [alertTxt,setAlertTxt] = useState('');
     var [alertShow,setAlertShow] = useState(false);
     var navigate = useNavigate()
+    var [progress,setProgress]  = useState(false);
     
     var [name,setName] = useState('');
     var [cnic,setCnic] = useState('');
@@ -69,6 +71,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
     },[])
 
     var submit = async()=>{
+
         var getId =  localStorage.getItem('HabibId')
         var type = localStorage.getItem('type')
 
@@ -88,8 +91,9 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
         }else if(sign==''){
             setAlertShow(true)
             setAlertTxt('Please select your signature image.')
-            return
+        return
         }else
+        setProgress(true)
         if(!edit){
         if(
             name=='' ||
@@ -98,21 +102,19 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             rel=='' ||
             surName=='' ||
             numberCode+number=='' ||
-            landLine=='' ||
             currentAddress=='' ||
-            permanentAddress ||
+            permanentAddress=='' ||
             city==''  ||
             country==''  ||
-            passport==''  ||
             kimName==''  ||
-            kimRel+'-'+kimsurName==''  ||
+            kimsurName==''  ||
             relation==''  ||
             kimNumberCode==''  ||
             kimNumber==''  ||
-            kimAddress==''  ||
-            remarks==''){
+            kimAddress==''){
             setAlertShow(true)
             setAlertTxt('Please fill form completely.')
+            setProgress(false)
             return
         }
     }
@@ -160,20 +162,24 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             })
             if(data.message=='Success'){
                 alert('Form editted Successfull')
-                // handleEvent('edit-form')
+        setProgress(false)
+        // handleEvent('edit-form')
                 navigate("/")
             }else{
                 console.log('There is an error')
-            }
+        setProgress(false)
+    }
     
         }else{
             var {data} = await axios.post(dev+'/client/addClient',obj)
             if(data.message=='Success'){
                 alert('Form submitted Successfull')
+                setProgress(false)
                 // handleEvent('submit-form')
                 navigate("/")
             }else{
                 console.log('There is an error')
+                setProgress(false)
             }
     
         }
@@ -224,6 +230,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
         <p>CNIC</p>
             <input className='form1Input form1Input2' 
             placeholder='Number'
+            type='number'
             value={cnic}
             onChange={e=>setCnic(e.target.value)}
             />
@@ -258,6 +265,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             />
             <input className='form1Input form1Input21' 
             placeholder='Mobile Number'
+            type='number'
             value={number}
             onChange={e=>setNumber(e.target.value)}
             />
@@ -267,6 +275,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             <p>Security ID</p>
             <input className='form1Input' 
             placeholder='ID'
+            type='number'
             value={securityId}
             onChange={e=>setSecurityId(e.target.value)}
             />
@@ -275,6 +284,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
         <p>Landline</p>
             <input className='form1Input form1Input2' 
             placeholder='Landline Number'
+            type='number'
             value={landLine}
             onChange={e=>setLandLine(e.target.value)}
             />
@@ -363,6 +373,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             <input className='form1Input' 
             placeholder='Number'
             value={kimNumber}
+            type='number'
             onChange={e=>setKimNumber(e.target.value)}
             />
         </Grid>
@@ -385,6 +396,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             <input className='form1Input form1Input21' 
             placeholder='Number'
             value={kimCelNumber}
+            type='number'
             onChange={e=>setKimCelNumber(e.target.value)}
             />
 </div>
@@ -419,7 +431,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
 
     <button className='SaveBtn'
     onClick={submit}
-    >Save</button>
+    >{progress ? <CircularProgress color='error' size={13} /> : 'Save'}</button>
     </div>
   )
 

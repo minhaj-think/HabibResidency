@@ -3,11 +3,14 @@ import './Header.css';
 import {Grid} from '@mui/material'
 import Logo from './../../assets/HabibLogo.png';
 import {useNavigate} from 'react-router-dom'
-
+import axios from 'axios';
+import { dev } from '../../config/routes';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Header = ({active}) => {
     
     var navigate = useNavigate()
+    var [progress,setProgress]  = useState(false);
     var [show,setShow] = useState(false)
     useEffect(()=>{
         var type = localStorage.getItem('type')
@@ -17,6 +20,22 @@ const Header = ({active}) => {
             setShow(false)
         }
     },[])
+
+    const handleLogout=async()=>{
+        setProgress(true)
+        var {data} = await axios.post(dev+'/subadmin/logoutSubadmin',{
+          id:"631b30e0f367947d691965a4"
+        }) 
+        if(data.message=='Success'){
+          localStorage.removeItem('HabibId')
+        setProgress(false)
+        navigate('/login')
+      }else{
+        setProgress(false)
+        console.log('failed')
+      }
+      }
+    
 
     return (
     <div className='headerMain'>
@@ -54,6 +73,13 @@ const Header = ({active}) => {
             <div  className={active=='logs' ? 'show' : 'hide'} />
             </div>
             }
+            <div className='headerDiv logout'>
+            <span className='headerLink5 logoutTxt' onClick={()=>handleLogout()}>
+            {progress ? <CircularProgress color='error' size={13} /> : 'Logout' }                
+                
+                </span>
+            </div>
+            
         </div>
     </div>
   )

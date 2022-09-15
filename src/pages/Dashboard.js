@@ -20,7 +20,6 @@ const Dashboard = () => {
   
   useEffect(()=>{
     var userId =   localStorage.getItem('HabibId')
-    console.log(!userId)
     if(userId){
     }else{
       navigate('/login')
@@ -30,18 +29,6 @@ const Dashboard = () => {
     fetching()
   },[])
 
-  const handleLogout=async()=>{
-
-    var {data} = await axios.post(dev+'/subadmin/logoutSubadmin',{
-      id:"631b30e0f367947d691965a4"
-    }) 
-    if(data.message=='Success'){
-      localStorage.removeItem('HabibId')
-      navigate('/login')
-  }else{
-      console.log('failed')
-  }
-  }
 
 
   var fetching =async ()=>{
@@ -94,11 +81,11 @@ const Dashboard = () => {
     return (
     <div>
         <Header active='dash'/>
-        <div style={{display:'flex',justifyContent:'flex-end',width:'90%',margin:'auto'}}>
+        {/* <div style={{display:'flex',justifyContent:'flex-end',width:'90%',margin:'auto'}}>
         <button className='LogoutBtn'
         onClick={handleLogout}
         >Logout</button>
-        </div>
+        </div> */}
 
         <div className='dashboardSubDiv'>
         <Categories/>

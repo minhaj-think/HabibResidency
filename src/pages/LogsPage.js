@@ -5,6 +5,7 @@ import './logs.css';
 import { dev } from '../config/routes';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const LogsPage = () => {
 
@@ -28,7 +29,6 @@ var fetching=async()=>{
   var {data} = await axios.post(dev+'/admin/getSystemLogs/'+activeIndex)
   if(data.message=='Success'){
     setLogs(data.doc.logs)
-    console.log(data.doc)
     pageLength=data.doc.pages
     setPageLength(pageLength)
   }else{
@@ -36,7 +36,6 @@ var fetching=async()=>{
   }
 
   setTimeout(()=>{
-    console.log('yes')
 handlePagination(1)
 
 },2000)
@@ -89,7 +88,6 @@ var handlePagination = async (currentPage) =>{
   var {data} = await axios.post(dev+'/admin/getSystemLogs/'+currentPage)
   if(data.message=='Success'){
     setLogs(data.doc.logs)
-    console.log(data.doc)
   }else{
     console.log('error-=>',data)
   }
@@ -100,7 +98,7 @@ var handlePagination = async (currentPage) =>{
   return (
     <div>
         <Header active='logs'/>
-          {
+          {logs!=[] &&
             logs.map((v,i)=>{
               var msg;
 
@@ -110,7 +108,7 @@ var handlePagination = async (currentPage) =>{
                 msg= `${v.operationBy == "superadmin" ?  'superadmin' : v.user.username} search the form.`
               }else if(v.logType=='new-user'){
                 msg= `${v.operationBy == "superadmin" ?  'superadmin' : v.user.username} created a new user.`
-              }else if(v.logType=="print-barocde"){
+              }else if(v.logType=="print-barcode"){
                 msg= `${v.operationBy == "superadmin" ?  'superadmin' : v.user.username} prints a barcode.`
               }else if(v.logType=="logout-user"){
                 msg= `${v.operationBy == "superadmin" ?  'superadmin' : v.user.username} logged out.`
@@ -151,7 +149,10 @@ var handlePagination = async (currentPage) =>{
               }
             )
           }
-
+{
+  logs==[] && 
+  <CircularProgress />
+}
 <div className='paginationDiv logPagination'>
                 <div className='PrevPagBtn'
                 onClick={()=>{

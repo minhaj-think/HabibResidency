@@ -68,16 +68,13 @@ const AccountModal = ({open,setOpen}) => {
     if(scan){
       privileges.push('scan-barcode')
     }
-    console.log("www--www")
     var {data} = await axios.post(dev+'/subadmin/createSubadmin',{
       privileges,
       email,
       password,
       username:name
     })
-    console.log(data)
     if(data.message=='Success'){
-      console.log("success")
       setOpen(false)
     }else{
       console.log("failed")

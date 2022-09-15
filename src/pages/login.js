@@ -6,6 +6,7 @@ import axios from 'axios';
 import { dev } from '../config/routes';
 import { useNavigate } from 'react-router-dom';
 import Switch from '@mui/material/Switch';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () => {
 
@@ -14,11 +15,12 @@ const Login = () => {
     var [password,setPassword] = useState("");
     var [alertTxt,setAlertTxt] = useState('');
     var [alertShow,setAlertShow] = useState(false);
-    
+    var [progress,setProgress]  = useState(false);
     var naivgate = useNavigate();
 
   const handleSubmit =async()=>{
-
+    setProgress(true)
+    try{
     if(supper){
       var {data} = await axios.post(dev+'/admin/adminLogin',{
         email,password
@@ -27,11 +29,13 @@ const Login = () => {
       if(data.message=='Success'){
         localStorage.setItem('type','SuperAdmin')
         localStorage.setItem('HabibId',data.doc._id)
+        setProgress(false)
         naivgate('/')
       }
       else{
         setAlertShow(true)
         setAlertTxt(data.err)
+        setProgress(false)
       }
   
     }
@@ -44,15 +48,22 @@ const Login = () => {
         localStorage.setItem('HabibId',data.doc._id)
         localStorage.setItem('type','SubAdmin')
         localStorage.setItem( 'privileges',JSON.stringify(data.doc.privileges) )
+        setProgress(false)
         naivgate('/')
       }
       else{
         setAlertShow(true)
         setAlertTxt(data.err)
+        setProgress(false)
       }
     
     }
-
+  }catch(err){
+    console.log(err.message)
+    setAlertShow(true)
+    setAlertTxt(err.message)
+    setProgress(false)
+}
 
   }
 
@@ -79,6 +90,7 @@ const Login = () => {
             placeholder='Password'
             value={password}
             onChange={e=>setPassword(e.target.value)}
+            type='password'
             />
             <br/>
             <br/>
@@ -101,7 +113,7 @@ const Login = () => {
             <br/>
             <button className='loginBtn'
             onClick={handleSubmit}
-            >Login</button>
+            >{progress ? <CircularProgress color='error' size={13} /> : 'Login'}</button>
         </div>
 
         </div>

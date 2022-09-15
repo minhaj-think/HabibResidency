@@ -23,8 +23,6 @@ const AccountListing = () => {
     var [pageArray,setPageArray] = useState([])
     var [pageLength,setPageLength] = useState(2)
     var [editOpen,setEditOpen] = useState(false)
-    var [arr,setArr] = useState([])
-    var [a,seta] = useState(false)
     var [selectedIem,setSelectedIem] = useState('')
     var [refresh,setRefresh] = useState(false)
     
@@ -46,7 +44,6 @@ useEffect(()=>{
             setAdminsList(data.doc.admins)
             pageLength=data.doc.pages
             setPageLength(pageLength)
-            console.log(data)
         
         }else{
             console.log('failed')
@@ -105,7 +102,6 @@ useEffect(()=>{
                 status:false
             })
                 if(data.message){
-                    console.log('true-->',data)
                 fetching()
             }else{
                     console.log('true-->Error',data)
@@ -118,7 +114,6 @@ useEffect(()=>{
                 status:true
             })
             if(data.message){
-                console.log('false-->',data)
                 fetching()
             }else{
                 console.log('false-->Error',data)
@@ -144,20 +139,20 @@ useEffect(()=>{
                             <AiOutlineCheck color={headingChecked ? 'red' : '#fff'} style={{height:'80%'}} />
                         </div> */}
                     {/* </Grid> */}
-                    <Grid item md={windowWidth>1100 ? 3 : 2.5} sm={3} xs={2.8}>
+                    <Grid item md={windowWidth>1100 ? 3 : 3} sm={3} xs={3}>
                        <span style={{marginLeft:'10px'}}>UserName</span>
                         </Grid>
-                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <Grid item md={2.5} sm={2.35} xs={2.25}>
                     <span>Email</span>
                     </Grid>
-                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <Grid item md={2.5} sm={2.35} xs={2.25}>
                     <span>Status</span>
                     </Grid>
 
-                    <Grid item md={windowWidth>1100 ? 2.5 : 2} sm={2.25} xs={2.2}>
+                    <Grid item md={windowWidth>1100 ? 2.5 : 2.5} sm={2.5} xs={2.5}>
                        <span>Password</span>
                     </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2} style={{display:'flex',justifyContent:'center'}}>
+                    <Grid item md={1.5} sm={1.8} xs={2} style={{display:'flex',justifyContent:'center'}}>
                     <div className='AddBtn' onClick={()=>setOpen(true)}>
                         <span>Add</span>
                     </div>
@@ -183,29 +178,29 @@ useEffect(()=>{
                         </div>
                             </div> */}
                     {/* </Grid> */}
-                    <Grid item md={windowWidth>1100 ? 3 : 3.5} sm={3} xs={2.8}>
+                    <Grid item md={windowWidth>1100 ? 3 : 3} sm={3} xs={3}>
                     <div className='subColDiv' >
                        <span style={{wordBreak:'break-all',marginLeft:'10px'}} >{v.username}</span>
                     </div>
                         </Grid>
-                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <Grid item md={2.5} sm={2.35} xs={2.25}>
                     <div className='subColDiv' >
                     <span style={{wordBreak:'break-all'}} >{v.email}</span>
                     </div>
                     </Grid>
-                    <Grid item md={2.5} sm={1.75} xs={2}>
+                    <Grid item md={2.5} sm={2.35} xs={2.25}>
                     <div className={v.enabled ? 'subColDiv enabled' :'subColDiv disabled'} 
                     onClick={()=>handleStatus(v)}
                     >
                     <span style={{wordBreak:'break-all'}} >{v.enabled ? 'click to suspend' : 'click to restore'}</span>
                     </div>
                     </Grid>
-                    <Grid item md={2.5} sm={1.5} xs={1.5}>
+                    <Grid item md={2.5} sm={2.5} xs={2.5}>
                     <div className='subColDiv' >
                        <span style={{wordBreak:'break-all'}} >{v.password}</span>
                     </div>
                     </Grid>
-                    <Grid item md={1.5} sm={1.5} xs={2}>
+                    <Grid item md={1.5} sm={1.8} xs={2}>
                     <div className='subColDiv' >
                     <div className='EditBtn'
                     onClick={()=>{
@@ -225,6 +220,8 @@ useEffect(()=>{
 
     </div>
     <div className='listingLastDiv listingLastDiv'>
+        {
+            adminsList &&
             <div className='paginationDiv'>
                 <div className='PrevPagBtn'
                 onClick={()=>{
@@ -251,10 +248,9 @@ useEffect(()=>{
                     <MdKeyboardArrowRight/>
                 </div>
             </div>
-            {/* <div className='accountDelBtn'>
-                <span className='deleteTxt'>Delete</span>
-            </div> */}
+        }
             </div>
+
 
     </>
   )

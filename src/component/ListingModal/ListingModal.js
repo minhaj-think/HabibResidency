@@ -7,6 +7,7 @@ import ReactToPrint from 'react-to-print';
 import './ListingModal.css';
 import axios from 'axios';
 import { dev } from '../../config/routes';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const style = {
     position: 'absolute',
@@ -24,11 +25,12 @@ const style = {
 const ListingModal = ({setOpen,open,barCode}) => {
   const componentRef = useRef();
   var [verify,setVerify] = useState(false)
+  var [progress,setProgress]  = useState(false);
 
   const handleEvent=async()=>{
     var getId =  localStorage.getItem('HabibId')
     var type = localStorage.getItem('type')
-
+    setProgress(true)
     if(type=='SuperAdmin'){
       var obj={
         logType:'print-barcode',
@@ -45,10 +47,12 @@ const ListingModal = ({setOpen,open,barCode}) => {
     var {data} = await axios.post(dev+'/client/printBarcode',obj);
     if(data.message=='Success'){
       console.log('successful')
-      setVerify(true)
+    setProgress(false)
+    setVerify(true)
     }else{
       console.log('falied-->',data)
-    }
+    setProgress(false)
+  }
   }
 
   return (
@@ -62,9 +66,13 @@ const ListingModal = ({setOpen,open,barCode}) => {
           <div  ref={componentRef} className='singleBarCodeMain'>
         <Barcode value={barCode} style={{maxWidth:'200px'}} />
           </div>
+          {
+          !verify &&
           <button className='printThisBtn'
           onClick={()=>handleEvent()}
-        >Verify to print</button>
+          disabled={progress}
+        > {progress ? <CircularProgress color='error' size={13} /> :'Verify to print'}</button>
+          }
         {
           verify &&
           <ReactToPrint

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import CircularProgress from '@mui/material/CircularProgress';
 import './AccountModal.css';
 import axios from 'axios';
 import { dev } from '../../../config/routes';
@@ -35,13 +36,14 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
     var [print,setPrint] = useState(false);
     var [scan,setScan] = useState(false);
     var [openPassword,setOpenPassword] = useState(false);
+    var [progress,setProgress]=useState(false)
+    var [delProgress,setDelProgress]=useState(false)
     
     // privilages
     React.useEffect(()=>{
         setName(selectedIem.username)
         // if(selectedIem?.privileges){
             // for(let i=0;i<selectedIem?.privileges.length;i++){
-            //     console.log(selectedIem?.privileges[i])
             //     switch(selectedIem?.privileges[i]){
             //         case 'search-form':
             //         setSearch(true)
@@ -73,15 +75,16 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
     },[selectedIem])
 
     const handleDelete=async()=>{
-        console.log(selectedIem)
+        setDelProgress(true)
         var {data} = await axios.delete(dev+'/subadmin/deleteSubadmin',{
-            id:selectedIem._id
+            data:{
+              id:selectedIem._id
+            } 
         })
-        console.log(data)
         if(data.message=='Success'){
-            console.log("success")
             alert("You delete this account successfully")
-            setRefresh(prev=>!prev)
+            setDelProgress(false)
+        setRefresh(prev=>!prev)
             setOpen(false)
           }else{
             console.log("failed")
@@ -91,9 +94,12 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
 
   const handleSubmit =async()=>{
 
+    setProgress(true)
+    
     if(username==''){
       alert('Please enter name')
-      return
+    setProgress(false)
+    return
     }
     var privileges=[];
     if(search){
@@ -122,11 +128,10 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
       id:selectedIem._id,
       username
     })
-    console.log(data)
     if(data.message=='Success'){
-      console.log("success")
       setRefresh(prev=>!prev)
-      setOpen(false)
+    setProgress(false)
+    setOpen(false)
     }else{
       console.log("failed")
     }
@@ -242,16 +247,19 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
    
         <button className='loginBtn'
         onClick={handleSubmit}
-        >Submit</button>
+        disabled={(progress || delProgress)}
+        >{ progress ? <CircularProgress color='error' size={13} /> : 'Submit' }</button>
 
 <button className='loginBtn editPassBtn'
         onClick={()=>setOpenPassword(true)}
+        disabled={progress}
         >Edit Passowrd</button>
 
 
 <button className='loginBtn delPassBtn'
         onClick={handleDelete}
-        >Delete Account</button>
+        disabled={(progress || delProgress)}
+        >{ delProgress ? <CircularProgress color='error' size={13} /> : 'Delete Account'}</button>
 
         </Box>
       </Modal>

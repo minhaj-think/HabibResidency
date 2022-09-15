@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import './AccountModal.css';
 import axios from 'axios';
 import { dev } from '../../../config/routes';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const style = {
     position: 'absolute',
@@ -25,9 +26,13 @@ const style = {
 const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
 
     var [password,setPassword] = useState("");
+    var [progress,setProgress]=useState(false)
+
 
     const handleSubmit =async()=>{
+      setProgress(true)
 if(password.length<8){
+      setProgress(false)
       alert('Password should be atleast of 8 characters')
       return
     }
@@ -36,12 +41,13 @@ if(password.length<8){
         newPassword:password,
         id:selectedIem._id
     })
-    console.log(data)
     if(data.message=='Success'){
       console.log("success")
       setOpen(false)
+      setProgress(false)
       setRefresh(prev=>!prev)
     }else{
+      setProgress(false)
       console.log("failed")
     }
   }
@@ -62,11 +68,12 @@ if(password.length<8){
             placeholder='Password'
             value={password}
             onChange={e=>setPassword(e.target.value)}
+            type='password'
             />
    
         <button className='loginBtn'
         onClick={handleSubmit}
-        >Submit</button>
+        >{ progress ? <CircularProgress color='error' size={13} /> :  'Submit'}</button>
 
         </Box>
       </Modal>

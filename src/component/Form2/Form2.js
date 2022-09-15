@@ -5,6 +5,7 @@ import {AiOutlineCheck} from 'react-icons/ai';
 import axios from 'axios';
 import { dev } from '../../config/routes';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Form2 = ({front,back,profile,sign,edit,state}) => {
 
@@ -12,6 +13,8 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
     var [alertTxt,setAlertTxt] = useState('');
     var [alertShow,setAlertShow] = useState(false);
     var navigate = useNavigate()
+    var [progress,setProgress]  = useState(false);
+
     var [checked,setChecked] = useState(true)
     var [name,setName] =  useState('');
     var [ceo,setCeo] =  useState('');
@@ -82,6 +85,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             setAlertTxt('Please enter atleast 1 form.')
             return
         }
+        setProgress(true)
         if(!edit){
             if(
                 name=='' ||
@@ -97,7 +101,8 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             ){
                 setAlertShow(true)
                 setAlertTxt('Please fill form completely.')
-                return
+        setProgress(false)
+        return
             }
     
         }
@@ -134,7 +139,6 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             ...event,
             logType:edit ? 'edit-form' : 'submit-form'
         }
-        console.log(obj)
         if(checked){
             obj={
             ...obj,                            
@@ -158,49 +162,27 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             })
             if(data.data.message=='Success'){
                 alert('Form editted Successfull')
-                // handleEvent('edit-form')
+        setProgress(false)
+        // handleEvent('edit-form')
                 navigate("/")
 
             }else{
                 console.log('There is an error')
-            }    
+        setProgress(false)
+    }    
         }else{
             var data = await axios.post(dev+'/dealer/addDealer',obj)
             if(data.data.message=='Success'){
                 alert('Form submitted Successfull')
                 // handleEvent('submit-form')
+                setProgress(false)
                 navigate("/")
             }else{
                 console.log('There is an error')
-            }    
+        setProgress(false)
+    }    
         }
     }
-
-    // const handleEvent=async(val)=>{
-    //     var getId =  localStorage.getItem('HabibId')
-    //     var type = localStorage.getItem('type')
-    
-    //     if(type=='SuperAdmin'){
-    //       var obj={
-    //         logType:val,
-    //         operationBy:'superadmin',
-    //       }
-    //     }else{
-    //       var obj={
-    //         logType:val,
-    //         operationBy:'user',
-    //         user:getId
-    //       }
-    //     }
-    
-    //     var {data} = await axios.post(dev+'/dealer/testCreateLog',obj);
-    //     if(data.message=='Success'){
-    //       console.log('successful')
-    //         navigate("/")
-    //         }else{
-    //       console.log('falied-->',data)
-    //     }
-    //   }
 
     return (
         <div className='formSubMain'>
@@ -231,6 +213,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             <input className='form1Input form1Input2' 
             placeholder='Number'
             value={cnic}
+            type='number'
             onChange={e=>setCnic(e.target.value)}
             />
         </Grid>
@@ -244,6 +227,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             />
             <input className='form1Input form1Input21' 
             placeholder='Mobile Number'
+            type='number'
             value={number}
             onChange={e=>setNumber(e.target.value)}
             />
@@ -254,6 +238,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             <p>Business Number</p>
             <input className='form1Input form1Input2'  
             placeholder='Business Number'
+            type='number'
             value={busiNum}
             onChange={e=>setBusiNum(e.target.value)}
             />
@@ -262,6 +247,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             <p>Security ID</p>
             <input className='form1Input fonm2Changeble' 
             placeholder='Number'
+            type='number'
             value={securityId}
             onChange={e=>setSecurityId(e.target.value)}
             />
@@ -270,6 +256,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
         <p>NTN No</p>
             <input className='form1Input form1Input2' 
             placeholder='Number'
+            type='number'
             value={ntn}
             onChange={e=>setNtn(e.target.value)}
             />
@@ -278,6 +265,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             <p>SECP No</p>
             <input className='form1Input formSubDivFull' 
             placeholder='Permanant Address'
+            type='number'
             value={secp}
             onChange={e=>setSecp(e.target.value)}
             />
@@ -340,6 +328,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
         <p>Mobile No of reference</p>
             <input className='form1Input formSubDivFull' 
             placeholder='Number'
+            type='number'
             value={dealerNum}
             onChange={e=>setDealerNum(e.target.value)}
             />            
@@ -347,6 +336,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
         <Grid item xs={12} className='formSubDiv'>
         <p>Registration ID of Dealer</p>
             <input className='form1Input formSubDivFull' 
+            type='number'
             placeholder='ID'
             value={dealerRegId}
             onChange={e=>setDealerRegId(e.target.value)}
@@ -374,7 +364,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
 
     <button className='SaveBtn'
     onClick={()=>submit()}
-    >Save</button>
+    >{progress ? <CircularProgress color='error' size={13} /> : 'Save'}</button>
     </div>
   )
 
