@@ -76,6 +76,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
         var type = localStorage.getItem('type')
 
         setAlertShow(false)
+        setProgress(true)
         if(profile==''){
             setAlertShow(true)
             setAlertTxt('Please select your profile picture first.')
@@ -93,31 +94,95 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             setAlertTxt('Please select your signature image.')
         return
         }else
-        setProgress(true)
-        if(!edit){
-        if(
-            name=='' ||
-            cnic=='' ||
-            securityId=='' ||
-            rel=='' ||
-            surName=='' ||
-            numberCode+number=='' ||
-            currentAddress=='' ||
-            permanentAddress=='' ||
-            city==''  ||
-            country==''  ||
-            kimName==''  ||
-            kimsurName==''  ||
-            relation==''  ||
-            kimNumberCode==''  ||
-            kimNumber==''  ||
-            kimAddress==''){
+        // if(!edit){
+            if(name==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter name.')
+                setProgress(false)
+                return
+            }else if(cnic==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your CNIC.')
+                setProgress(false)
+                return
+            }else if(cnic.length<13){
+                setAlertShow(true)
+                setAlertTxt('Your CNIC should have 13 digits.')
+                setProgress(false)
+                return
+            }else if(securityId==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your security Id.')
+                setProgress(false)
+                return
+            }else if(rel==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your relative relation.')
+                setProgress(false)
+                return
+            }else if(surName==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your relative name.')
+                setProgress(false)
+                return
+            }else if(number==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your mobile number.')
+                setProgress(false)
+                return
+            }else if(currentAddress==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your current address.')
+                setProgress(false)
+                return
+            }else if(permanentAddress==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your permanent address.')
+                setProgress(false)
+                return
+            }else if(city==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your city.')
+                setProgress(false)
+                return
+            }else if(country==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your country.')
+                setProgress(false)
+                return
+            }else if(permanentAddress==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your permanent address.')
+                setProgress(false)
+                return
+            }else if(kimName==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your kin name.')
+                setProgress(false)
+                return
+            }else if(kimNumber==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your kin address.')
+                setProgress(false)
+                return
+            }else if(kimAddress==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your kin address.')
+                setProgress(false)
+                return
+            }else if(kimsurName==''){
+                setAlertShow(true)
+                setAlertTxt('Please Enter your kin relation name.')
+                setProgress(false)
+                return
+            }else
+        if(relation=='' ){
             setAlertShow(true)
-            setAlertTxt('Please fill form completely.')
+            setAlertTxt('Please enter your kin relationship with appliance.')
             setProgress(false)
             return
         }
-    }
+    // }
     if(type=='SuperAdmin'){
         //   logType:val,
         var event={
@@ -338,7 +403,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             />
         </Grid>
         <Grid item xs={12} style={{marginTop:'30px'}}>
-        <p className='clientTxt'>NEXT TO KIM INFORMATION</p>
+        <p className='clientTxt'>NEXT TO KIN INFORMATION</p>
         </Grid>
 
         <Grid item xs={12} className='formSubDiv'>

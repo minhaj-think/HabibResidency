@@ -52,7 +52,6 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             setDealer(state.user.referenceName)
             setDealerNum(state.user.referenceMobile)
             setChecked(state.user.dealerReferred)
-            // setDealerRegId(state.user.)
 
         }
 
@@ -64,6 +63,7 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
         var type = localStorage.getItem('type')
 
         setAlertShow(false)
+        setProgress(true)
         if(profile==''){
             setAlertShow(true)
             setAlertTxt('Please select your profile picture first.')
@@ -84,28 +84,55 @@ const Form2 = ({front,back,profile,sign,edit,state}) => {
             setAlertShow(true)
             setAlertTxt('Please enter atleast 1 form.')
             return
-        }
-        setProgress(true)
-        if(!edit){
-            if(
-                name=='' ||
-                ceo=='' ||
-                cnic=='' ||
-                number=='' ||
-                busiNum=='' ||
-                securityId=='' ||
-                ntn=='' ||
-                secp=='' ||
-                busiAdd=='' ||
-                email==''
-            ){
+        }else
+        // if(!edit){
+            if(name==''){
                 setAlertShow(true)
-                setAlertTxt('Please fill form completely.')
+        setAlertTxt('Please Enter name.')
+        setProgress(false)
+        return
+            }else if(ceo==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter CEO Name.')
+        setProgress(false)
+        return
+            }else if(cnic==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter Your CNIC.')
+        setProgress(false)
+        return
+            }else if(cnic==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter Your mobile number.')
+        setProgress(false)
+        return
+            }else if(securityId==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter security Id.')
+        setProgress(false)
+        return
+            }else if(ntn==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter Your NTN Number.')
+        setProgress(false)
+        return
+            }else if(busiNum==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter Your Business Number.')
+        setProgress(false)
+        return
+            }else if(email==''){
+                setAlertShow(true)
+        setAlertTxt('Please Enter Your Email.')
+        setProgress(false)
+        return
+            }else{
+                setAlertShow(true)
+                setAlertTxt('Please Enter Your Business Address.')
         setProgress(false)
         return
             }
-    
-        }
+        // }
         if(type=='SuperAdmin'){
             //   logType:val,
             var event={

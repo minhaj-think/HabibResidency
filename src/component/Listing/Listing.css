@@ -1,24 +1,75 @@
 .clientSubItemTitle{
     color: #99B2C6;
     min-width:20%;
+    background-color: #f1f5f8;
     font-size: 14px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+.listingEditTit{
+    height: 56px;
+    /* padding-top: 19px; */
+    /* padding-bottom: 19px; */
+    background-color: #f1f5f8 !important;
+
+}
+.clientSubItemBarCodeMain{
+    background-color: #f1f5f8 !important;
+    padding-top: 12px;
+    padding-bottom: 11px;
+
+}
+.listingCheck{
+    /* padding-top: 15px; */
+    height: 56px;
+    /* padding-bottom: 15px; */
+    background-color: #f1f5f8 !important;
+}
+.listChk{
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+}
+.listingCheckTrue{
+    padding-top: 15px;
+    padding-bottom: 17px;
+    background-color: #f1f5f8 !important;
+
+}
+.listingEdit{
+    padding-top: 14px;
+    padding-bottom: 14px;
+    background-color: #f1f5f8 !important;
 }
 .clientSubItemNormal{
     min-width:20%;
+    margin-top: 0px !important;
+    display: inline;
+    margin-bottom: 0px !important;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    background-color: #f1f5f8;
+}
+.clientLstHeadingMain{
+    margin-top: 0px !important;
 }
 .clientLstItem{
-    width: 100%;
-    margin-top: 3px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    min-width: 100%;
+    /* width: auto !important; */
+    margin-top: -28px;
+    /* padding-top: 2px; */
+    /* padding-bottom: 2px; */
     text-align: left;
     padding-left: 5px;
     padding-right: 5px;
     display: flex;
     align-items: center;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
     flex-direction: row;
-    background-color: #F1F5F8;
+    /* background-color: #F1F5F8; */
 }
 /* width */
 ::-webkit-scrollbar {
@@ -40,11 +91,15 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #afb1b1;
   }
+.subMainListing{
+    overflow-x: scroll;
 
+}
 .listingMain{
     border: 0.1px solid #f2f2f2;
     border-radius: 5px;
     font-family: Poppins;
+    overflow-x: hidden;
     /* padding-bottom: 10px; */
     /* padding-top: 10px; */
 }
@@ -127,13 +182,13 @@ input:focus{
     border: 1px solid black;
     border-radius: 5px;
     margin: auto;
-    margin-top: 5px;
+    margin-top: 15px !important;
     cursor: pointer;
-    width: 15px;
-    height: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 15px !important;
+    height: 15px !important;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
 }
 
 .btnsMain{
@@ -162,7 +217,7 @@ align-items: center;
 }
 
 .checkedItem{
-    background-color: #f3d7da;
+    background-color: #f3d7da !important; 
 }
 
 .listingLastDiv{
@@ -241,6 +296,32 @@ align-items: center;
     padding-top: 7px;
     font-size: 12px;
  }
+ .clientSubItemNormal,.clientSubItemTitle{
+    min-width:25%;
+    font-size: 14px;
+    padding-top:0px;
+    height: 52px;
+    padding-bottom: 0px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+}
+.listingCheck,.listingEditTit{
+    height: 52px;
+}
+.listingEdit{
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    height: 52px;
+    justify-content: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: green;
+}
+.listChk{
+    height: 52px;
+}
 }
 
 
@@ -257,7 +338,15 @@ align-items: center;
         min-width:25%;
         font-size: 14px;
     }
-    
+    .listingCheck{
+        height: 32px;
+    }
+    .listingEditTit{
+        height: 52px;
+    }
+    .listChk{
+        height: 32px;
+    }   
 .clientPrintBtn span{
     font-size: 12px !important;
     padding-top: 0px;
@@ -294,10 +383,22 @@ align-items: center;
     font-size: 10px;
  }
  .CheckBox{
-    width: 10px;
-    height: 10px;
+    /* width: 10px; */
+    /* height: 10px; */
     border-radius: 3px;
-    margin-top: 0px;
+    margin-top: 0px !important;
+}
+.listingCheck,.listingCheckTrue{
+    padding-top: 20px;
+    /* background-color: red !important; */
+    min-width: 10% !important;
+}
+.editWid{
+    min-width: 10% !important;
+}
+.listingEditTit,.listingCheck{
+    min-width: 10% !important;
+
 }
 .PrintBtn{
     height: 25px;
@@ -381,6 +482,9 @@ font-size: 14px;
         min-width: 30%;
         /* margin-right: 20px; */
     }
+    .clientSubItemNormal,.clientSubItemTitle{
+        min-width: 40%;
+    }
     }
     
 @media only screen and (max-width:440px){
@@ -396,6 +500,16 @@ font-size: 14px;
     height: 40px;
     width: 70%;
 }
+.editBtn,.deleteBtn{
+    min-width: 60%;
+    /* margin-right: 20px; */
+}
+
+.clientSubItemNormal,.clientSubItemTitle{
+    min-width: 55%;
+}
+
+
 }
 @media only screen and (max-width:400px){
 

@@ -216,17 +216,24 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
             </div>
           )}
         </div>
+        <div className='subMainListing'>
 
-        <div className={"clientLstItem"}>
-          <div style={{ minWidth: "6%", textAlign: "center" }}></div>
-          <div style={{ minWidth: "6%", textAlign: "center" }}></div>
+        <div className={'clientLstItem clientLstHeadingMain' }>
+        <div style={{minWidth:'6%',textAlign:'center'}} className='listingCheck'>
+                        <p></p>
+                       </div>
+                       <div style={{minWidth:'6%',textAlign:'center'}} className='listingEditTit'>
+                       <p></p>
+                       </div>
           <p className="clientSubItemTitle">Creation Date</p>
           <p className="clientSubItemTitle">Name as per CNIC</p>
           <p className="clientSubItemTitle">CNIC</p>
           <p className="clientSubItemTitle">Phone Number</p>
           <p className="clientSubItemTitle">Security Id</p>
           <p className="clientSubItemTitle">No. of Codes</p>
-          <p style={{ minWidth: "150px" }}></p>
+                       <div style={{minWidth:'150px',textAlign:'center'}} className='listingEditTit'>
+                       <p></p>
+                       </div>
         </div>
 
         {!showFiltered &&
@@ -235,10 +242,10 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
               <div
                 key={i}
                 className={
-                  checked[i] ? "clientLstItem checkedItem" : "clientLstItem"
+                   "clientLstItem"
                 }
               >
-                <div style={{ minWidth: "6%", textAlign: "center" }}>
+                <div style={{ minWidth: "6%", textAlign: "center" }} className={checked[i] ? 'listingCheck listChk checkedItem' : 'listingCheck listChk' }>
                   <div className="subColDiv">
                     <div
                       className="CheckBox"
@@ -263,9 +270,9 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
                   </div>
                 </div>
 
-                <div style={{ minWidth: "6%", textAlign: "center" }}>
+                <div style={{ minWidth: "6%", textAlign: "center" }}  className='editWid'>
                   {showEdit && (
-                    <span>
+                    <p className={checked[i] ? 'listingEdit checkedItem' : 'listingEdit'}>
                       {" "}
                       <GrEdit
                         color="gray"
@@ -278,16 +285,16 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
                           });
                         }}
                       />{" "}
-                    </span>
+                    </p>
                   )}
                 </div>
-                <p className='clientSubItemNormal'>{v.createdDate.split('T')[0]}</p>
-                <p className="clientSubItemNormal">{v.firmName}</p>
-                <p className="clientSubItemNormal">{v.CNIC}</p>
-                <p className="clientSubItemNormal">{v.phone}</p>
-                <p className="clientSubItemNormal">{v.securityId}</p>
-                <p className="clientSubItemNormal">{v.barcodes.length}</p>
-                <p style={{ minWidth: "150px" }}>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.createdDate.split('T')[0]}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.firmName}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.CNIC}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.phone}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.securityId}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.barcodes.length}</p>
+                <p style={{ minWidth: "150px" }} className={checked[i] ? 'checkedItem clientSubItemBarCodeMain' : 'clientSubItemBarCodeMain'}>
                   {showScan && (
                     <div
                       className="clientPrintBtn"
@@ -310,10 +317,10 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
                 <div
                 key={i}
                 className={
-                  checked[i] ? "clientLstItem checkedItem" : "clientLstItem"
+                  checked[i] ? "clientLstItem" : "clientLstItem"
                 }
               >
-                <div style={{ minWidth: "6%", textAlign: "center" }}>
+                <div style={{ minWidth: "6%", textAlign: "center" }} className={checked[i] ? 'listingCheck listChk checkedItem' : 'listingCheck listChk' }>
                   <div className="subColDiv">
                     <div
                       className="CheckBox"
@@ -338,10 +345,10 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
                   </div>
                 </div>
 
-                <div style={{ minWidth: "6%", textAlign: "center" }}>
+                <div style={{ minWidth: "6%", textAlign: "center" }} className='editWid'>
                   {showEdit && (
-                    <span>
-                      {" "}
+                    <p className={checked[i] ? 'listingEdit checkedItem' : 'listingEdit'}>
+                    {" "}
                       <GrEdit
                         color="gray"
                         onClick={() => {
@@ -353,15 +360,16 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
                           });
                         }}
                       />{" "}
-                    </span>
+                    </p>
                   )}
                 </div>
-                <p className="clientSubItemNormal">{v.firmName}</p>
-                <p className="clientSubItemNormal">{v.CNIC}</p>
-                <p className="clientSubItemNormal">{v.phone}</p>
-                <p className="clientSubItemNormal">{v.securityId}</p>
-                <p className="clientSubItemNormal">{v.barcodes.length}</p>
-                <p style={{ minWidth: "150px" }}>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.createdDate.split('T')[0]}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.firmName}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.CNIC}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.phone}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.securityId}</p>
+                <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.barcodes.length}</p>
+                <p style={{ minWidth: "150px" }} className={checked[i] ? 'checkedItem clientSubItemBarCodeMain' : 'clientSubItemBarCodeMain'} >
                   {showScan && (
                     <div
                       className="clientPrintBtn"
@@ -379,6 +387,10 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
             );
           })}
       </div>
+      </div>
+      { !showFiltered &&
+
+
       <div className="DealerlistingLastDiv listingLastDiv">
         <div className="paginationDiv">
           <div className="PrevPagBtn">
@@ -423,6 +435,7 @@ const DealerListing = ({ showScan, showSearch, showDelete, showEdit }) => {
           </div>
         )}
       </div>
+}
     </>
   );
 };

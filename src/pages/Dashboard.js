@@ -20,7 +20,10 @@ const Dashboard = () => {
   
   useEffect(()=>{
     var userId =   localStorage.getItem('HabibId')
+    var type = localStorage.getItem('type')
     if(userId){
+      console.log(userId)
+      console.log(type)
     }else{
       navigate('/login')
     }

@@ -200,28 +200,32 @@ catch(err){
             </div>
             }
         </div>
-
-        <div className={'clientLstItem' }>
-                       <div style={{minWidth:'6%',textAlign:'center'}}></div>
-                       <div style={{minWidth:'6%',textAlign:'center'}}></div>
+            <div className='subMainListing'>
+        <div className={'clientLstItem clientLstHeadingMain' }>
+                       <div style={{minWidth:'6%',textAlign:'center'}} className='listingCheck'>
+                        <p></p>
+                       </div>
+                       <div style={{minWidth:'6%',textAlign:'center'}} className='listingEditTit'>
+                       <p></p>
+                       </div>
                        <p className='clientSubItemTitle'>Creation Date</p>
                        <p className='clientSubItemTitle'>Name as per CNIC</p>
                        <p className='clientSubItemTitle' >CNIC</p>
                        <p className='clientSubItemTitle' >Phone Number</p>
                        <p className='clientSubItemTitle' >Security Id</p>
                        <p className='clientSubItemTitle' >City</p>
-                       <p style={{minWidth:'150px'}} >
-                       </p>
+                       <div style={{minWidth:'150px',textAlign:'center'}} className='listingEditTit'>
+                       <p></p>
+                       </div>
                         </div>
 
 
             { !showFiltered &&
                 clients.map((v,i)=>{
                     return(
-                        <div key={i} className={checked[i] ? 'clientLstItem checkedItem' : 'clientLstItem' }>
+                        <div key={i} className={'clientLstItem' }>
 
-<div style={{minWidth:'6%',textAlign:'center'}}>
-                    <div className='subColDiv' >
+<div style={{minWidth:'6%',textAlign:'center'}} className={checked[i] ? 'listingCheck listChk checkedItem' : 'listingCheck listChk' } >
                         <div className='CheckBox'
                         onClick={()=>{
                             if(checked[i]!=''){
@@ -240,12 +244,11 @@ catch(err){
                             <AiOutlineCheck color={'red'} style={{height:'80%'}} />
                             }
                             </div>
-                            </div>
                         </div>
 
-                            <div style={{minWidth:'6%',textAlign:'center'}}>
+                            <div style={{minWidth:'6%',textAlign:'center'}} className='editWid' >
                         {showEdit &&
-                       <p> <GrEdit color='gray'
+                       <p className={checked[i] ? 'listingEdit checkedItem' : 'listingEdit'} >  <GrEdit color='gray'
                        onClick={()=>{
                         navigate('/edit',{
                             state:{
@@ -257,17 +260,18 @@ catch(err){
                         /> </p>
                         }
                         </div>
-                       <p className='clientSubItemNormal'>{v.createdDate.split('T')[0]}</p>
-                       <p className='clientSubItemNormal'>{v.fName}</p>
-                       <p className='clientSubItemNormal' >{v.CNIC}</p>
-                       <p className='clientSubItemNormal' >{v.phone}</p>
-                       <p className='clientSubItemNormal' >{v.securityId}</p>
-                       <p className='clientSubItemNormal' >{v.city}</p>
-                       <p style={{minWidth:'150px'}} >
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.createdDate.split('T')[0]}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.fName}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.CNIC}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.phone}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.securityId}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.city}</p>
+                       <p style={{minWidth:'150px'}} className={checked[i] ? 'checkedItem clientSubItemBarCodeMain' : 'clientSubItemBarCodeMain'} >
                        {
                             showScan &&
                     <div className='clientPrintBtn'
                     onClick={()=>{
+                        setBarCode(v.barcode)
                         setOpen(true)
                     }}
                     >
@@ -283,9 +287,9 @@ catch(err){
 { showFiltered &&
                 filtered.map((v,i)=>{
                     return(
-                        <div key={i} className={checked[i] ? 'clientLstItem checkedItem' : 'clientLstItem' }>
+                        <div key={i} className={checked[i] ? 'clientLstItem' : 'clientLstItem' }>
 
-<div style={{minWidth:'6%',textAlign:'center'}}>
+<div style={{minWidth:'6%',textAlign:'center'}} className={checked[i] ? 'listingCheck listChk checkedItem' : 'listingCheck listChk' }>
                     <div className='subColDiv' >
                         <div className='CheckBox'
                         onClick={()=>{
@@ -308,9 +312,10 @@ catch(err){
                             </div>
                         </div>
 
-                            <div style={{minWidth:'6%',textAlign:'center'}}>
+                            <div style={{minWidth:'6%',textAlign:'center'}} className='editWid'>
                         {showEdit &&
-                       <p> <GrEdit color='gray'
+                    <p className={checked[i] ? 'listingEdit checkedItem' : 'listingEdit'}>
+                    <GrEdit color='gray'
                        onClick={()=>{
                         navigate('/edit',{
                             state:{
@@ -322,16 +327,19 @@ catch(err){
                         /> </p>
                         }
                         </div>
-                       <p className='clientSubItemNormal'>{v.fName}</p>
-                       <p className='clientSubItemNormal' >{v.CNIC}</p>
-                       <p className='clientSubItemNormal' >{v.phone}</p>
-                       <p className='clientSubItemNormal' >{v.securityId}</p>
-                       <p className='clientSubItemNormal' >{v.city}</p>
-                       <p style={{minWidth:'150px'}} >
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.createdDate.split('T')[0]}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '}>{v.fName}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.CNIC}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.phone}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.securityId}</p>
+                       <p className={checked[i] ? 'clientSubItemNormal checkedItem' : 'clientSubItemNormal '} >{v.city}</p>
+                       <p style={{minWidth:'150px'}} className={checked[i] ? 'checkedItem clientSubItemBarCodeMain' : 'clientSubItemBarCodeMain'} >
                        {
                             showScan &&
                     <div className='clientPrintBtn'
                     onClick={()=>{
+                        console.log(v)
+                        setBarCode(v.barcode)
                         setOpen(true)
                     }}
                     >
@@ -344,8 +352,10 @@ catch(err){
                         })
             }
 
-
+</div>
     </div>
+        { !showFiltered &&
+
     <div className='listingLastDiv'>
             <div className='paginationDiv'>
                 <div className='PrevPagBtn'
@@ -384,6 +394,7 @@ catch(err){
         }
 
             </div>
+    }
 
     </>
   )

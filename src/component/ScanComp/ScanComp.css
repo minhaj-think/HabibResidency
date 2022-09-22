@@ -1,3 +1,9 @@
+.alertDIv{
+    width: 25vw;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .ScanImgDiv{
     width: 25vw;
     height: 18vw;
@@ -10,3 +16,38 @@
 .ScanCompTxt{
     font-family: Poppins;
 }
+
+@media only screen and (max-width:950px){
+.ScanImgDiv,.qrMain{
+    width: 40vw !important;
+    height: 30vw !important;
+}
+.alertDIv{
+    width: 40vw !important;
+}
+}
+
+@media only screen and (max-width:550px){
+    .ScanImgDiv,.qrMain{
+        width: 50vw !important;
+        height: 40vw !important;
+       
+    }
+    .alertDIv{
+        width: 50vw !important;
+    }
+    
+    }
+
+    @media only screen and (max-width:410px){
+        .ScanImgDiv,.qrMain{
+            width: 70vw !important;
+            height: 50vw !important;
+           
+        }
+        .alertDIv{
+            width: 70vw !important;
+        }
+    
+        }
+        
