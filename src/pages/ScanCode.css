@@ -6,7 +6,7 @@ max-width: 30%;
 }
 .barcodeInputBox{
     min-width: 35%;
-    padding:10px 5px 10px 5px;
+    padding:13px 7px 13px 7px;
     border-radius: 5px;
     background-color: #F1F5F8;
     margin-top: 30px;
@@ -33,3 +33,25 @@ max-width: 30%;
     border: 1px solid #99b2c6;
 
 }
+br{
+    user-select: none;
+}
+@media only screen and (max-width:1200px){
+ .barcodeInputBox{
+    min-width: 50%;
+ }   
+}
+
+
+@media only screen and (max-width:900px){
+    .barcodeInputBox{
+       min-width:65%;
+    }   
+   }
+
+   @media only screen and (max-width:400px){
+    .barcodeInputBox{
+       min-width:75%;
+    }   
+   }
+   

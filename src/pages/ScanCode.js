@@ -119,7 +119,7 @@ const ScanCode = () => {
         </Grid>
         {
           barCode &&
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <input  autoFocus={true}
           ref={ref}
           // onChange={handleBarCodeInputChange}
@@ -132,7 +132,7 @@ const ScanCode = () => {
       }
         {
           barCode &&
-        <Grid item sm={12}>
+        <Grid item xs={12}>
         <button className='codeBtn'
         onClick={handleBarCodeInputChange}
         >Search</button>
