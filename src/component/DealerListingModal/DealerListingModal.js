@@ -28,6 +28,7 @@ const DealerListingModal = ({setOpenModal,openModal,barCodes}) => {
   const componentRef = useRef();
   var [verify,setVerify] = useState(false)
   var [progress,setProgress]  = useState(false);
+  var [align,setAlign] = useState('center')
 
   const handleEvent=async()=>{
     var getId =  localStorage.getItem('HabibId')
@@ -66,10 +67,26 @@ const DealerListingModal = ({setOpenModal,openModal,barCodes}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        <p style={{textAlign:'center',fontSize:24,marginTop:0,fontWeight:600}}>Align</p>
+          <div className='listingAlignmentStyle'>
+
+          <button onClick={()=>setAlign('flex-start')}
+          className={align=='flex-start' ? 'active' : ''}
+          >Left</button>
+          <button onClick={()=>setAlign('center')}
+          className={align=='center' ? 'active' : ''}
+          >Center</button>
+          <button onClick={()=>setAlign('flex-end')}
+          className={align=='flex-end' ? 'active' : ''}
+          >Right</button>
+          </div>
+
           <div ref={componentRef}>            
             {
                 barCodes.map((v,i)=>(
-                    <div className='multiBarCodeMain'>
+                    <div className='multiBarCodeMain'
+                    style={{alignItems:align}}
+                    >
                     <Barcode value={v} style={{maxWidth:'200px'}} />
                       </div>            
                 ))

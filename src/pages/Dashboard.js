@@ -16,14 +16,15 @@ const Dashboard = () => {
   var [showSearch,setShowSearch] = useState(false)
   var [showDelete,setShowDelete] = useState(false)
   var [showEdit,setShowEdit] = useState(false)
+  var [analytics,setAnalytics] = useState(false)
   var navigate=useNavigate();
   
   useEffect(()=>{
     var userId =   localStorage.getItem('HabibId')
     var type = localStorage.getItem('type')
     if(userId){
-      console.log(userId)
-      console.log(type)
+      // console.log(userId)
+      // console.log(type)
     }else{
       navigate('/login')
     }
@@ -42,7 +43,8 @@ const Dashboard = () => {
     setShowSearch(true)
     setShowDelete(true)
     setShowEdit(true)
-    }else{
+    setAnalytics(true)
+  }else{
     var getPreviliges =  JSON.parse(localStorage.getItem('privileges'))
 
     var a = getPreviliges.find(printPrivilage)
@@ -60,6 +62,10 @@ const Dashboard = () => {
     var d = getPreviliges.find(editPrivilage)
     showEdit = d==undefined ? false : true
     setShowEdit(showEdit)
+
+    var e = getPreviliges.find(analyticsPrivilage)
+    analytics = e==undefined ? false : true
+    setAnalytics(analytics)
 
   }
 
@@ -81,6 +87,11 @@ const Dashboard = () => {
     return val=='edit-form'
   }
 
+  var analyticsPrivilage=(val)=>{
+    return val=='analytics'
+  }
+
+
     return (
     <div>
         <Header active='dash'/>
@@ -91,7 +102,10 @@ const Dashboard = () => {
         </div> */}
 
         <div className='dashboardSubDiv'>
-        <Categories/>
+          {
+            analytics &&
+        <Categories analyticsAuth={analytics} />
+          }
         <Listing showEdit={showEdit} showDelete={showDelete} showScan={showScan}  showSearch={showSearch} />
         <DealerListing showEdit={showEdit} showDelete={showDelete} showScan={showScan} showSearch={showSearch}  />
         </div>

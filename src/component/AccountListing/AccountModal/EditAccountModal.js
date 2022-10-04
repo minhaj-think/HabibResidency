@@ -28,6 +28,7 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
 
     var [username,setName] = useState(selectedIem.username);
     
+    // privilages
     var [search,setSearch] = useState(false);
     var [create,setCreate] = useState(false);
     var [edit,setEdit] = useState(false);
@@ -35,6 +36,8 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
     var [view,setView] = useState(false);
     var [print,setPrint] = useState(false);
     var [scan,setScan] = useState(false);
+    var [analytics,setAnalytics] = useState(false);
+    
     var [openPassword,setOpenPassword] = useState(false);
     var [progress,setProgress]=useState(false)
     var [delProgress,setDelProgress]=useState(false)
@@ -123,6 +126,10 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
     if(scan){
       privileges.push('scan-barcode')
     }
+    if(analytics){
+      privileges.push('analytics')
+    }
+    console.log(privileges,'00',analytics)
     var {data} = await axios.put(dev+'/subadmin/editSubadmin',{
       privileges,
       id:selectedIem._id,
@@ -130,6 +137,7 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
     })
     if(data.message=='Success'){
       setRefresh(prev=>!prev)
+      console.log(data)
     setProgress(false)
     setOpen(false)
     }else{
@@ -241,6 +249,14 @@ const AccountModal = ({open,setOpen,selectedIem,setRefresh}) => {
         </div>
 
         <div className='selectSubMain'>
+        <input  type={'checkbox'} 
+        value={analytics}
+        onChange={()=>{
+          setAnalytics(!analytics)
+        }
+        }
+        />
+        <span>analytics</span>
         </div>
 
         </div>

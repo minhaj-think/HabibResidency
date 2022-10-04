@@ -6,7 +6,7 @@ import { dev } from '../../config/routes';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const Form1 = ({front,back,profile,sign,edit,state}) => {
+const Form1 = ({front,back,profile,sign,edit,state,thumb}) => {
 
     var [alertTxt,setAlertTxt] = useState('');
     var [alertShow,setAlertShow] = useState(false);
@@ -80,19 +80,28 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
         if(profile==''){
             setAlertShow(true)
             setAlertTxt('Please select your profile picture first.')
-            return
+                setProgress(false)
+                return
         }else if(front==''){
             setAlertShow(true)
             setAlertTxt('Please select front image of your CNIC .')
-            return
+                setProgress(false)
+                return
         }else if(back==''){
             setAlertShow(true)
             setAlertTxt('Please select back side image of your CNIC .')
-            return
+                setProgress(false)
+                return
         }else if(sign==''){
             setAlertShow(true)
             setAlertTxt('Please select your signature image.')
-        return
+            setProgress(false)
+            return
+        }else if(thumb==''){
+            setAlertShow(true)
+            setAlertTxt('Please select your fingerPrint image.')
+            setProgress(false)
+            return
         }else
         // if(!edit){
             if(name==''){
@@ -216,6 +225,7 @@ const Form1 = ({front,back,profile,sign,edit,state}) => {
             cnicBackImage:back,
             signatureImage:sign,
             clientImage:profile,
+            fingerprintImage:thumb,
             ...event,
             logType:edit ? 'edit-form' : 'submit-form'
 

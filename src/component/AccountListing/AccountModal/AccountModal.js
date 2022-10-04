@@ -36,7 +36,8 @@ const AccountModal = ({open,setOpen}) => {
     var [view,setView] = useState(false);
     var [print,setPrint] = useState(false);
     var [scan,setScan] = useState(false);
-
+    var [analytics,setAnalytics] = useState(false);
+    
   const handleSubmit =async()=>{
 
     if(name=='' || email==''){
@@ -67,6 +68,9 @@ const AccountModal = ({open,setOpen}) => {
     }
     if(scan){
       privileges.push('scan-barcode')
+    }
+    if(analytics){
+      privileges.push('analytics')
     }
     var {data} = await axios.post(dev+'/subadmin/createSubadmin',{
       privileges,
@@ -166,7 +170,7 @@ const AccountModal = ({open,setOpen}) => {
              />
             <span>view-form</span>
             </div>
-    
+
             <div className='selectSubMain'>
             <input className='formSelect' type={'checkbox'} 
         value={print}
@@ -174,7 +178,7 @@ const AccountModal = ({open,setOpen}) => {
             />
             <span>print-barcode</span>
             </div>
-    
+
             </div>
 
  {/* fourth div */}
@@ -189,7 +193,13 @@ const AccountModal = ({open,setOpen}) => {
         </div>
 
         <div className='selectSubMain'>
+        <input  type={'checkbox'} 
+        value={analytics}
+        onChange={()=>setAnalytics(!analytics)}
+        />
+        <span>analytics</span>
         </div>
+
 
         </div>
    

@@ -7,11 +7,13 @@ import { dev } from '../config/routes';
 import { useNavigate } from 'react-router-dom';
 import Switch from '@mui/material/Switch';
 import CircularProgress from '@mui/material/CircularProgress';
+import {BiShow} from 'react-icons/bi'
 
 const Login = () => {
 
     var [email,setEmail] = useState("");
     var [supper,setSuper] = useState(false);
+    var [show,setShow] = useState(true);
     var [password,setPassword] = useState("");
     var [alertTxt,setAlertTxt] = useState('');
     var [alertShow,setAlertShow] = useState(false);
@@ -90,10 +92,20 @@ const Login = () => {
             placeholder='Password'
             value={password}
             onChange={e=>setPassword(e.target.value)}
-            type='password'
+            
+            type={show ? 'password' : 'text'}
             />
-            <br/>
-            <br/>
+            <div style={{display:'flex',flexDirection:'row',justifyContent:'flex-end',alignItems:'center',marginTop:0,paddingRight:0}}>
+
+            <p className={show ? 'showStyle' : 'hideStyle'}
+          onClick={()=>setShow(!show)}
+          >{show ? 'Show Password' : 'Hide Password'}</p>
+          <BiShow style={{marginTop:3,cursor:'pointer'}} color={show ? '#afafaf' : '#f05568'} 
+          onClick={()=>setShow(!show)}
+          />
+            </div>
+            {/* <br/> */}
+            {/* <br/>  */}
             <span className='switchTxt'>SubAdmin</span>
             <Switch color='error' 
             value={supper}

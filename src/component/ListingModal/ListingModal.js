@@ -26,6 +26,7 @@ const ListingModal = ({setOpen,open,barCode}) => {
   const componentRef = useRef();
   var [verify,setVerify] = useState(false)
   var [progress,setProgress]  = useState(false);
+  var [align,setAlign] = useState('center')
 
   const handleEvent=async()=>{
     var getId =  localStorage.getItem('HabibId')
@@ -63,7 +64,22 @@ const ListingModal = ({setOpen,open,barCode}) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div  ref={componentRef} className='singleBarCodeMain'>
+    <p style={{textAlign:'center',fontSize:24,marginTop:0,fontWeight:600}}>Align</p>
+          <div className='listingAlignmentStyle'>
+
+          <button onClick={()=>setAlign('left')}
+          className={align=='left' ? 'active' : ''}
+          >Left</button>
+          <button onClick={()=>setAlign('center')}
+          className={align=='center' ? 'active' : ''}
+          >Center</button>
+          <button onClick={()=>setAlign('right')}
+          className={align=='right' ? 'active' : ''}
+          >Right</button>
+          </div>
+          <div  ref={componentRef} className='singleBarCodeMain'
+          style={{justifyContent:align}}
+          >
         <Barcode value={barCode} style={{maxWidth:'200px'}} />
           </div>
           {

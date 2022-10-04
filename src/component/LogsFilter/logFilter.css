@@ -1,0 +1,77 @@
+.logFilterTitle{
+    margin-top: -5px;
+    text-align: left;
+    margin-bottom: 0px;
+}
+.logFilterMain{
+    margin-top :40px;
+    margin-bottom: 40px;
+}
+.picker{
+    /* align-self: flex-start; */
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    float: left;
+    /* margin-left: -40px; */
+    width: 60%;
+    font-size: 14px;
+}
+.logFilterIcon{
+    border-radius: 50%;
+    background-color: #f05568;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    display: flex;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+.logFilterSelect{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    width: 60%;
+    /* float: left; */
+    margin-left: -10%;
+
+}
+
+@media only screen and (max-width:1199px){
+.logFilterSelect,.picker{
+        padding: 5px;
+    }
+.logFilterIcon{
+    padding: 3px;
+}
+}
+@media only screen and (max-width:599px){
+
+.logFilterSelect{
+
+}
+}
+
+@media only screen and (max-width:599px){
+.picker{
+/* width: 70%; */
+}    
+.selectFloat{
+    /* float: left; */
+    margin-left: -15%;
+/* width: 78%; */
+}
+.removeMargin{
+    margin-left: 0px !important;
+}
+.logFilterSelect,.logFilterIcon{
+    /* margin-top: 20px; */
+    align-self: flex-start;
+}
+.logFilterIcon{
+    margin-left: 30px;
+}
+}

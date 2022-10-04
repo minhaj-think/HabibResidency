@@ -16,6 +16,7 @@ const FormPage = () => {
     var [front,setFront] = useState('');
     var [back,setBack] = useState('');
     var [sign,setSign] = useState('');
+    var [thumb,setThumb] = useState('');
     var [showCreate,setShowCreate] = useState(false);
     var navigate = useNavigate()
     
@@ -106,6 +107,22 @@ var handleSign = async (e)=>{
       .catch(error => console.log('error', error));
     }
     
+    var handleThumb = async (e)=>{
+    
+      var formData5 = new FormData();
+      formData5.append('fileData',e.target.files[0]);
+      fetch(dev+'/api/uploadFile',{
+          method: 'POST',
+          body: formData5,
+          redirect: 'follow'
+        }).then(response => response.json())
+        .then(result => {
+          console.log('resukt..',result)
+          setThumb(result.doc.filePath)
+      })
+        .catch(error => console.log('error', error));
+      }
+  
 
   return (
     <div>
@@ -136,13 +153,15 @@ var handleSign = async (e)=>{
                         (page==0) &&
                         <Form1 setProfile={setProfile} setSign={setSign}
                         setFront={setFront} setBack={setBack}
+                        thumb={thumb}
                         edit={false} front={front} back={back} profile={profile} sign={sign} />
                     }
                     {
                         (page==1) &&
                         <Form2  setProfile={setProfile} setSign={setSign}
                         setFront={setFront} setBack={setBack}
-                         edit={false} front={front} back={back} profile={profile} sign={sign} />
+                        thumb={thumb}
+                        edit={false} front={front} back={back} profile={profile} sign={sign} />
                     }
 
                     </div>
@@ -205,6 +224,19 @@ var handleSign = async (e)=>{
                           }
                         </div>
                         </label>
+
+                        <input type='file' id='thumb' style={{display:'none'}} onChange={(e)=>handleThumb(e)} />
+                        <label htmlFor='thumb'>
+                        <div className='SignDiv'>
+                          { thumb &&
+                            <img src={dev+'/api/getfile'+thumb} style={{height:'100%',width:'100%'}} />
+                          }
+                          { !thumb &&
+                            <p className='ThumbTxt'>FingerPrint Image</p>
+                          }
+                        </div>
+                        </label>
+
 
                     </div>
                 </Grid>

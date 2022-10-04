@@ -55,6 +55,19 @@
 .loginInput{
     width: 97%;
 }
+.showStyle{
+    cursor:pointer;
+    font-size:14px;
+    margin-right:5px;
+    color:#afafaf;
+}
+.hideStyle{
+    cursor:pointer;
+    font-size:14px;
+    margin-right:5px;
+    color:#f05568;
+
+}
 .loginBtn{
     background-color: #fff;
     border: 1px solid #f05568;

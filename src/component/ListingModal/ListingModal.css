@@ -1,5 +1,24 @@
 .singleBarCodeMain{
     width: 100%;
     display: flex;
-    justify-content: center;
+}
+.listingAlignmentStyle{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.listingAlignmentStyle button{
+    background-color: #fff;
+    border:2px solid black;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.listingAlignmentStyle button:hover{
+    background-color: black;
+    color: #fff;
+}
+.active{
+    background-color: #000 !important;
+    color: #fff;
 }

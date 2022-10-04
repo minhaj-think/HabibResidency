@@ -6,6 +6,7 @@ import { dev } from '../config/routes';
 import {MdKeyboardArrowRight,MdKeyboardArrowLeft} from 'react-icons/md'
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
+import LogsFilter from './../component/LogsFilter/LogsFilter.js';
 
 const LogsPage = () => {
 
@@ -14,25 +15,46 @@ const LogsPage = () => {
   var [pageArray,setPageArray] = useState([])
   var [pageLength,setPageLength] = useState(2)
   var navigate=useNavigate();
+  var [type,setType] = useState('all')
+  var [usersList,setUsersList] = useState([])
 
   useEffect(()=>{
+    // console.log(new Date())
+    userFetching()
+
     var userId =   localStorage.getItem('HabibId')
     if(!userId){
       navigate('/login')
     }
-
-fetching()
+    if(type=='all'){
+      fetching()
+    }
   },[])
 
-var fetching=async()=>{
+  var userFetching = async ()=>{
+    try{
 
+      var {data} = await axios.get(dev+'/subadmin/allSubadminNames');
+      if(data.message=='Success'){
+        setUsersList(data.doc)
+      }else{
+        // error
+      }
+
+    }catch(err){
+      console.log('err',err)
+    }
+  }
+
+var fetching=async()=>{
+  console.log('fetcgin')
   var {data} = await axios.post(dev+'/admin/getSystemLogs/'+activeIndex)
   if(data.message=='Success'){
     setLogs(data.doc.logs)
     pageLength=data.doc.pages
     setPageLength(pageLength)
   }else{
-    console.log('error-=>',data)
+    // console.log('error-=>',data)
   }
 
   setTimeout(()=>{
@@ -94,10 +116,23 @@ var handlePagination = async (currentPage) =>{
 
 }
 
+const handleFiltered=(data,pageFor)=>{
+  console.log("inter handle filter")
+  pageLength=data.pages
+  setPageLength(pageLength)
+  handlePagination(pageFor)      
+  console.log(pageLength)
+  setTimeout(()=>{
+    setLogs(data.logs)
+  },1000)
+}
 
   return (
     <div>
         <Header active='logs'/>
+        <LogsFilter 
+        usersList={usersList}
+        handleFiltered={handleFiltered} type={type} setType={setType}  activeIndex={activeIndex} />
           {logs!=[] &&
             logs.map((v,i)=>{
               var msg;
